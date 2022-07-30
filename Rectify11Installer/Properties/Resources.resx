@@ -121,6 +121,9 @@
   <data name="eula" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\eula.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
+  <data name="themepage" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\themepage.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
   <data name="lightPreview" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\lightPreview.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
@@ -130,14 +133,11 @@
   <data name="rectify11Installer" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\rectify11Installer.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
-  <data name="themepage" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Resources\themepage.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  <data name="rectify11.xml" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\rectify11.xml;System.String, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089;Windows-1252</value>
   </data>
   <data name="light.msstyles" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\light.msstyles;System.Byte[], mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="rectify11.xml" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Resources\rectify11.xml;System.String, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089;Windows-1252</value>
   </data>
   <data name="darkPreview" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\darkPreview.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
@@ -145,11 +145,17 @@
   <data name="installprogress" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\installprogress.gif;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
+  <data name="10start" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\10start.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
   <data name="installconfirm" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\installconfirm.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
-  <data name="border" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Resources\border.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  <data name="ep" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\ep.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="sideimage" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\sideimage.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
   <data name="20220728_001643" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\20220728_001643.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
@@ -166,13 +172,13 @@
   <data name="Dark.msstyles" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\Dark.msstyles;System.Byte[], mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
+  <data name="border" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\border.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
   <data name="install" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\install.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
-  <data name="sideimage" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Resources\sideimage.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
-  </data>
-  <data name="ep" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Resources\ep.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  <data name="11start" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\11start.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
 </root>

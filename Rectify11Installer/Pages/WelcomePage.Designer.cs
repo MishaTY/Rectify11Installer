@@ -45,7 +45,7 @@ namespace Rectify11Installer.Pages
             this.pictureBox1.BackColor = System.Drawing.Color.Transparent;
             this.pictureBox1.BackgroundImage = global::Rectify11Installer.Properties.Resources.rectify11Installer;
             this.pictureBox1.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Zoom;
-            this.pictureBox1.Location = new System.Drawing.Point(72, 125);
+            this.pictureBox1.Location = new System.Drawing.Point(66, 132);
             this.pictureBox1.Name = "pictureBox1";
             this.pictureBox1.Size = new System.Drawing.Size(173, 184);
             this.pictureBox1.TabIndex = 11;
@@ -54,7 +54,7 @@ namespace Rectify11Installer.Pages
             // cmbInstallNOW
             // 
             this.cmbInstallNOW.BackColor = System.Drawing.Color.Transparent;
-            this.cmbInstallNOW.Location = new System.Drawing.Point(303, 221);
+            this.cmbInstallNOW.Location = new System.Drawing.Point(303, 232);
             this.cmbInstallNOW.Name = "cmbInstallNOW";
             this.cmbInstallNOW.Note = "Rectify your current Windows 11 installation";
             this.cmbInstallNOW.Size = new System.Drawing.Size(294, 55);
@@ -65,7 +65,7 @@ namespace Rectify11Installer.Pages
             // 
             this.cmbUninstall.BackColor = System.Drawing.Color.Transparent;
             this.cmbUninstall.Enabled = false;
-            this.cmbUninstall.Location = new System.Drawing.Point(303, 282);
+            this.cmbUninstall.Location = new System.Drawing.Point(303, 290);
             this.cmbUninstall.Name = "cmbUninstall";
             this.cmbUninstall.Note = "Restores the original Windows 11 look.";
             this.cmbUninstall.Size = new System.Drawing.Size(294, 55);
@@ -92,9 +92,9 @@ namespace Rectify11Installer.Pages
             this.lblVersion.Font = new System.Drawing.Font("Segoe UI", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
             this.lblVersion.Location = new System.Drawing.Point(5, 452);
             this.lblVersion.Name = "lblVersion";
-            this.lblVersion.Size = new System.Drawing.Size(95, 17);
+            this.lblVersion.Size = new System.Drawing.Size(49, 17);
             this.lblVersion.TabIndex = 15;
-            this.lblVersion.Text = "Version: 2.9.8.5";
+            this.lblVersion.Text = "v3.0-rp";
             // 
             // label3
             // 
@@ -102,9 +102,9 @@ namespace Rectify11Installer.Pages
             | System.Windows.Forms.AnchorStyles.Right)));
             this.label3.Font = new System.Drawing.Font("Segoe UI", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
             this.label3.ForeColor = System.Drawing.Color.White;
-            this.label3.Location = new System.Drawing.Point(303, 97);
+            this.label3.Location = new System.Drawing.Point(303, 100);
             this.label3.Name = "label3";
-            this.label3.Size = new System.Drawing.Size(294, 112);
+            this.label3.Size = new System.Drawing.Size(294, 121);
             this.label3.TabIndex = 17;
             this.label3.Text = resources.GetString("label3.Text");
             this.label3.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
@@ -124,6 +124,7 @@ namespace Rectify11Installer.Pages
             this.Size = new System.Drawing.Size(640, 475);
             this.WizardShowTitle = false;
             this.WizardTopText = "Welcome to Rectify11 Installer";
+            this.Load += new System.EventHandler(this.WelcomePage_Load);
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();

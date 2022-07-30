@@ -39,9 +39,9 @@ namespace Rectify11Installer.Pages
             // pictureBox1
             // 
             this.pictureBox1.Image = global::Rectify11Installer.Properties.Resources.eula;
-            this.pictureBox1.Location = new System.Drawing.Point(54, 84);
+            this.pictureBox1.Location = new System.Drawing.Point(60, 71);
             this.pictureBox1.Name = "pictureBox1";
-            this.pictureBox1.Size = new System.Drawing.Size(195, 200);
+            this.pictureBox1.Size = new System.Drawing.Size(186, 193);
             this.pictureBox1.SizeMode = System.Windows.Forms.PictureBoxSizeMode.StretchImage;
             this.pictureBox1.TabIndex = 19;
             this.pictureBox1.TabStop = false;
@@ -50,7 +50,7 @@ namespace Rectify11Installer.Pages
             // 
             this.label1.Font = new System.Drawing.Font("Segoe UI", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
             this.label1.ForeColor = System.Drawing.Color.White;
-            this.label1.Location = new System.Drawing.Point(299, 17);
+            this.label1.Location = new System.Drawing.Point(299, 15);
             this.label1.Name = "label1";
             this.label1.Size = new System.Drawing.Size(303, 41);
             this.label1.TabIndex = 20;

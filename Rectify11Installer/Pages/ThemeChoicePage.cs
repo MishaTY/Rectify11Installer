@@ -34,5 +34,10 @@ namespace Rectify11Installer.Pages
         {
             darkAwareRadioButton3.Checked = true;
         }
+
+        private void darkAwareRadioButton1_CheckedChanged(object sender, EventArgs e)
+        {
+
+        }
     }
 }

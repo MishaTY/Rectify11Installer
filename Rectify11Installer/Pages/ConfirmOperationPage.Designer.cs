@@ -48,7 +48,7 @@
             this.pictureBox2.BackColor = System.Drawing.Color.Transparent;
             this.pictureBox2.BackgroundImage = global::Rectify11Installer.Properties.Resources.sideimage;
             this.pictureBox2.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Zoom;
-            this.pictureBox2.Location = new System.Drawing.Point(54, 91);
+            this.pictureBox2.Location = new System.Drawing.Point(54, 85);
             this.pictureBox2.Name = "pictureBox2";
             this.pictureBox2.Size = new System.Drawing.Size(193, 189);
             this.pictureBox2.TabIndex = 21;

@@ -725,6 +725,21 @@ namespace Rectify11Installer
                     await Task.Run(() => PatcherHelper.RunAsyncCommands("rundll32.exe", "setupapi,InstallHinfSection DefaultInstall 132 " + tempfldr + @"\files\cursors\install.inf", tempfldr));
                     await Task.Run(() => PatcherHelper.RunAsyncCommands("rundll32.exe", "setupapi,InstallHinfSection DefaultInstall 132 " + tempfldr + @"\files\cursors\linstall.inf", tempfldr));
                     await Task.Run(() => PatcherHelper.RunAsyncCommands("rundll32.exe", "setupapi,InstallHinfSection DefaultInstall 132 " + tempfldr + @"\files\cursors\xlinstall.inf", tempfldr));
+                    if (options.ShouldInstallExplorerPatcher)
+                    {
+                        Process process = Process.Start(tempfldr + @"\files\ep_setup.exe");
+                        await process.WaitForExitAsync();
+                        await PatcherHelper.RunAsyncCommands("regsvr32.exe", "/s \"%PROGRAMFILES%\\ExplorerPatcher\\ExplorerPatcher.amd64.dll\"", tempfldr);
+                        await Task.Run(() => PatcherHelper.RunAsyncCommands("reg.exe", "import " + tempfldr + @"\files\ep\basic.reg", tempfldr));
+                        if (epOptions.w10)
+                            await Task.Run(() => PatcherHelper.RunAsyncCommands("reg.exe", "import " + tempfldr + @"\files\ep\w10start.reg", tempfldr));
+                        else if (epOptions.w11)
+                            await Task.Run(() => PatcherHelper.RunAsyncCommands("reg.exe", "import " + tempfldr + @"\files\ep\w11start.reg", tempfldr));
+                        if (epOptions.w10TaskB)
+                            await Task.Run(() => PatcherHelper.RunAsyncCommands("reg.exe", "import " + tempfldr + @"\files\ep\w10taskb.reg", tempfldr));
+                        if (epOptions.micaExplorer)
+                            await Task.Run(() => PatcherHelper.RunAsyncCommands("reg.exe", "import " + tempfldr + @"\files\ep\micaexpl.reg", tempfldr));
+                    }
                     TaskDialogPage pg;
                     if (File.Exists(@"C:\Windows\system32\SecureUxTheme.dll"))
                     {
@@ -741,22 +756,6 @@ namespace Rectify11Installer
                     {
                         Process process = Process.Start(tempfldr + @"\files\UltraUXThemePatcher_4.3.4.exe");
                         await process.WaitForExitAsync();
-                    }
-
-                    if (options.ShouldInstallExplorerPatcher)
-                    {
-                        Process process = Process.Start(tempfldr + @"\files\ep_setup.exe");
-                        await process.WaitForExitAsync();
-                        await PatcherHelper.RunAsyncCommands("regsvr32.exe", "/s \"%PROGRAMFILES%\\ExplorerPatcher\\ExplorerPatcher.amd64.dll\"", tempfldr);
-                        await Task.Run(() => PatcherHelper.RunAsyncCommands("reg.exe", "import " + tempfldr + @"\files\ep\basic.reg", tempfldr));
-                        if (epOptions.w10)
-                            await Task.Run(() => PatcherHelper.RunAsyncCommands("reg.exe", "import " + tempfldr + @"\files\ep\w10start.reg", tempfldr));
-                        else if (epOptions.w11)
-                            await Task.Run(() => PatcherHelper.RunAsyncCommands("reg.exe", "import " + tempfldr + @"\files\ep\w11start.reg", tempfldr));
-                        if (epOptions.w10TaskB)
-                            await Task.Run(() => PatcherHelper.RunAsyncCommands("reg.exe", "import " + tempfldr + @"\files\ep\w10taskb.reg", tempfldr));
-                        if (epOptions.micaExplorer)
-                            await Task.Run(() => PatcherHelper.RunAsyncCommands("reg.exe", "import " + tempfldr + @"\files\ep\micaexpl.reg", tempfldr));
                     }
                     RebootPage.Start();
                     Navigate(RebootPage);

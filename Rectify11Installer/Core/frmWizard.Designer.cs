@@ -80,7 +80,7 @@ namespace Rectify11Installer
             // 
             // pnlBottom
             // 
-            this.pnlBottom.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(10)))), ((int)(((byte)(10)))), ((int)(((byte)(10)))));
+            this.pnlBottom.BackColor = System.Drawing.Color.Black;
             this.pnlBottom.Controls.Add(this.BtnBack);
             this.pnlBottom.Controls.Add(this.BtnNext);
             this.pnlBottom.Dock = System.Windows.Forms.DockStyle.Bottom;
