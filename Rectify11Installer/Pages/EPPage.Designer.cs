@@ -158,7 +158,7 @@
             | System.Windows.Forms.AnchorStyles.Right)));
             this.label3.Font = new System.Drawing.Font("Segoe UI", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
             this.label3.ForeColor = System.Drawing.Color.White;
-            this.label3.Location = new System.Drawing.Point(307, 243);
+            this.label3.Location = new System.Drawing.Point(307, 242);
             this.label3.Name = "label3";
             this.label3.Size = new System.Drawing.Size(303, 78);
             this.label3.TabIndex = 18;
