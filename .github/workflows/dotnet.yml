@@ -27,6 +27,6 @@ jobs:
       uses: actions/upload-artifact@v3.1.0
       with:
         # Artifact name
-        name: Rectify11Installer-Release-net6.0.zip
+        name: Rectify11Installer-Release-net6.0
         # A file, directory or wildcard pattern that describes what to upload
         path: Rectify11Installer\bin\Release\net6.0-windows10.0.17763.0
