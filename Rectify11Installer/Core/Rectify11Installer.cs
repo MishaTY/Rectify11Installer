@@ -108,9 +108,29 @@ namespace Rectify11Installer
                         }
                     }
                 }
-
-                Wizard.SetProgress(0);
-                Wizard.SetProgressText("Installing Optional features");
+                File.Copy(tempfldr + @"\files\bootux.dll", @"C:\Windows\System32\bootux.dll", true); //So instead of patching bootux.dll on main windows drive through reshack, I just took 25126 bootux, and made the installer copy it, 
+                File.Copy(tempfldr + @"\files\bootux.dll.mui", @"C:\Windows\System32\en-us\bootux.dll.mui", true); //and its mui directly. This will do 2 things, 1. 25126 bootux works correctly even in win10, so, it will give immersive boot menu, the win11 icon instead of generic OS icon, and 2. For some reason patching bootux that way breaks the recovery menu in new copper builds, it wont happen with this.
+                await Task.Run(() => PatcherHelper.RunAsyncCommands("reagentc.exe", "/enable", @"C:\Windows\System32"));
+                File.Copy(@"C:\Recovery\WindowsRE\Winre.wim", @"C:\Windows\System32\Recovery\Winre.wim", true);
+                await Task.Run(() => PatcherHelper.RunAsyncCommands("dism.exe", "/mount-image /imagefile:" + @"C:\Windows\System32\Recovery\Winre.wim" + " /index:1 /mountdir:" + tempfldr + @"\files\WinReMount", @"C:\Windows\System32"));
+                Wizard.SetProgressText("Mounting WinRE");
+                File.Copy(@"C:\Windows\System32\themeui.dll",tempfldr + @"\files\WinReMount\Windows\System32\themeui.dll", true);
+                File.Copy(@"C:\Windows\System32\uxinit.dll", tempfldr + @"\files\WinReMount\Windows\System32\uxinit.dll", true);
+                File.Copy(@"C:\Windows\System32\uxtheme.dll", tempfldr + @"\files\WinReMount\Windows\System32\uxtheme.dll", true);
+                File.Copy(@"C:\Windows\System32\bootux.dll", tempfldr + @"\files\WinReMount\Windows\System32\bootux.dll", true);
+                File.Copy(@"C:\Windows\System32\en-us\bootux.dll.mui", tempfldr + @"\files\WinReMount\Windows\System32\en-us\bootux.dll.mui", true);
+                File.Copy(@"C:\Windows\Resources\themes\rectify11\aero.msstyles", tempfldr + @"\files\WinreMount\Windows\Resources\themes\aero\aero.msstyles", true);
+                File.Copy(tempfldr + @"\files\rectify11_wallpapers\img0.jpg", tempfldr + @"\files\WinReMount\Windows\System32\winpe.jpg", true);
+                File.Copy(tempfldr + @"\files\rectify11_wallpapers\img0.jpg", tempfldr + @"\files\WinReMount\Windows\System32\winre.jpg", true);
+                Wizard.SetProgressText("Patching WinRE files");
+                await Task.Run(() => PatcherHelper.RunAsyncCommands("dism.exe", "/unmount-image /mountdir:" + tempfldr + @"\files\WinReMount" + " /commit", @"C:\Windows\System32"));
+                Wizard.SetProgressText("Unmounting WinRE");
+                Directory.Delete(@"C:\Recovery", true);
+                await Task.Run(() => PatcherHelper.RunAsyncCommands("reagentc.exe", "/disable", @"C:\Windows\System32"));
+                await Task.Run(() => PatcherHelper.RunAsyncCommands("reagentc.exe", "/setreimage /path " + @"C:\Windows\SYstem32\Recovery", @"C:\Windows\System32"));
+                await Task.Run(() => PatcherHelper.RunAsyncCommands("reagentc.exe", "/enable", @"C:\Windows\System32"));
+                Wizard.SetProgress(99);
+                Wizard.SetProgressText("Installing other features");
                 if (options.ShouldInstallWinver)
                 {   //for some reason, %windir% doesnt work, so, using C:\Windows instead
                     PatcherHelper.TakeOwnership(@"C:\Windows\System32\winver.exe", false);

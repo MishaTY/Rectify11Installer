@@ -45,7 +45,7 @@ namespace Rectify11Installer.Pages
             this.pictureBox1.BackColor = System.Drawing.Color.Transparent;
             this.pictureBox1.BackgroundImage = global::Rectify11Installer.Properties.Resources.rectify11Installer;
             this.pictureBox1.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Zoom;
-            this.pictureBox1.Location = new System.Drawing.Point(66, 132);
+            this.pictureBox1.Location = new System.Drawing.Point(75, 133);
             this.pictureBox1.Name = "pictureBox1";
             this.pictureBox1.Size = new System.Drawing.Size(173, 184);
             this.pictureBox1.TabIndex = 11;
@@ -78,7 +78,7 @@ namespace Rectify11Installer.Pages
             | System.Windows.Forms.AnchorStyles.Right)));
             this.label1.Font = new System.Drawing.Font("Segoe UI", 15.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point);
             this.label1.ForeColor = System.Drawing.Color.White;
-            this.label1.Location = new System.Drawing.Point(299, 70);
+            this.label1.Location = new System.Drawing.Point(299, 62);
             this.label1.Name = "label1";
             this.label1.Size = new System.Drawing.Size(218, 25);
             this.label1.TabIndex = 14;
@@ -102,7 +102,7 @@ namespace Rectify11Installer.Pages
             | System.Windows.Forms.AnchorStyles.Right)));
             this.label3.Font = new System.Drawing.Font("Segoe UI", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
             this.label3.ForeColor = System.Drawing.Color.White;
-            this.label3.Location = new System.Drawing.Point(303, 100);
+            this.label3.Location = new System.Drawing.Point(303, 95);
             this.label3.Name = "label3";
             this.label3.Size = new System.Drawing.Size(294, 121);
             this.label3.TabIndex = 17;

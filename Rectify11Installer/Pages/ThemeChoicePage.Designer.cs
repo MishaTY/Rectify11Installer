@@ -154,12 +154,11 @@
             // 
             this.label2.Font = new System.Drawing.Font("Segoe UI", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
             this.label2.ForeColor = System.Drawing.Color.White;
-            this.label2.Location = new System.Drawing.Point(309, 267);
+            this.label2.Location = new System.Drawing.Point(308, 311);
             this.label2.Name = "label2";
-            this.label2.Size = new System.Drawing.Size(264, 71);
+            this.label2.Size = new System.Drawing.Size(264, 45);
             this.label2.TabIndex = 3;
-            this.label2.Text = "These settings can later be changed in Settings -> Personalization. Dark with mic" +
-    "a may behave a bit buggy on Copper builds (25xxx).";
+            this.label2.Text = "These settings can later be changed in Settings -> Personalization.";
             this.label2.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
             // 
             // ThemeChoicePage

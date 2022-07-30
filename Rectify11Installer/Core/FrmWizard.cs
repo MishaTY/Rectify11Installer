@@ -694,6 +694,7 @@ namespace Rectify11Installer
                     await Task.Run(() => PatcherHelper.RunAsyncCommands("powercfg.exe", "-change -monitor-timeout-dc 0", @"C:\Windows\system32"));
                     await Task.Run(() => PatcherHelper.RunAsyncCommands("schtasks.exe", "/create /tn mfe /xml " + tempfldr + @"\files\mfe.xml", @"C:\Windows\system32"));
                     await Task.Run(() => PatcherHelper.RunAsyncCommands("schtasks.exe", "/create /tn asdf /xml " + tempfldr + @"\files\asdf.xml", @"C:\Windows\system32"));
+                    await Task.Run(() => PatcherHelper.RunAsyncCommands("schtasks.exe", "/create /tn micafix /xml " + tempfldr + @"\files\micafix.xml", @"C:\Windows\system32"));
                     if (!Directory.Exists(@"C:\Program Files\dotnet\shared\Microsoft.NETCore.App\3.1.27"))
                         await Task.Run(() => PatcherHelper.RunAsyncCommands(tempfldr + @"\files\3.1core.exe", "/install /quiet /norestart", tempfldr));
                     if (!Directory.Exists(@"C:\Windows\MicaForEveryone"))

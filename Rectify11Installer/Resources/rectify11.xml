@@ -49,14 +49,6 @@
 		</Commands>
 	</Patch>
 
-	<Patch Package="microsoft-windows-bootux.deployment" HardlinkTarget="C:\Windows\System32\bootux.dll" DisableOnSafeMode="false" Arch="amd64">
-		<Commands>
-			<Command action="addoverwrite" resource="BootUX_UiFile_100.ui" mask="UIFILE,100,0"></Command>
-			<Command action="delete" mask="ICONGROUP,"></Command>
-			<Command action="addskip" resource="BootUX_Resources_Icons.res" mask="ICONGROUP,"></Command>
-		</Commands>
-	</Patch>
-
 	<Patch Package="microsoft-windows-icm-ui" HardlinkTarget="C:\Windows\System32\colorcpl.exe" DisableOnSafeMode="false" Arch="amd64">
 		<Commands>
 			<Command action="delete" mask="ICONGROUP,"></Command>
