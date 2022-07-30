@@ -24,6 +24,7 @@ namespace Rectify11Installer
         private static readonly ThemeChoicePage ThemeChoice = new();
         private static readonly UninstallConfirmPage UninstallConfirmPage = new();
         private static readonly RebootPage RebootPage = new();
+        private static readonly EPPage EPPage = new();
 
         private WizardPage CurrentPage;
 
@@ -143,6 +144,22 @@ namespace Rectify11Installer
                 UpdateFrame();
             }
             else if (page == ThemeChoice)
+            {
+                navigationButton1.Visible = true;
+
+                BtnBack.Visible = true;
+                BtnNext.Visible = true;
+
+                BtnBack.Enabled = true;
+                BtnNext.Enabled = true;
+
+                BtnBack.ButtonText = "Back";
+                BtnNext.ButtonText = "Next";
+                navigationButton1.Visible = true;
+                pnlTop.Visible = true;
+                UpdateFrame();
+            }
+            else if (page == EPPage)
             {
                 navigationButton1.Visible = true;
 
@@ -462,6 +479,16 @@ namespace Rectify11Installer
             else if (CurrentPage == ConfirmOpPage)
             {
                 //The user clicked on "Back" when on the confirm install/uninstall page
+                IRectifyInstalllerInstallOptions options = InstallOptions;
+                //We are about to install it
+                if (options.ShouldInstallExplorerPatcher)
+                    Navigate(EPPage);
+                else
+                    Navigate(ThemeChoice);
+            }
+            else if (CurrentPage == EPPage)
+            {
+                //The user clicked on "Back" when on the confirm install/uninstall page
                 Navigate(ThemeChoice);
             }
             else if (CurrentPage == ThemeChoice)
@@ -489,7 +516,21 @@ namespace Rectify11Installer
                 Navigate(ThemeChoice);
 
             }
+
             else if (CurrentPage == ThemeChoice)
+            {
+                IRectifyInstalllerInstallOptions options = InstallOptions;
+                //We are about to install it
+                if (options.ShouldInstallExplorerPatcher)
+                    Navigate(EPPage);
+                else
+                {
+                    Navigate(ConfirmOpPage);
+                    ConfirmOpPage.TextLable.Text = "You are about to do the following:\n\nInstall Rectify11 on this Windows 11 Installation\n\nPlease close everything and save your work as a reboot will be required at the end of the installation.";
+                }
+
+            }
+            else if (CurrentPage == EPPage)
             {
                 //We are about to install it
                 Navigate(ConfirmOpPage);
@@ -569,6 +610,7 @@ namespace Rectify11Installer
                 {
                     IRectifyInstalllerInstallOptions options = InstallOptions;
                     IRectifyInstalllerThemeOptions themeoptions = ThemeChoice;
+                    IRectifyInstalllerEPOptions epOptions = EPPage;
                     //install
 
                     try
@@ -706,8 +748,15 @@ namespace Rectify11Installer
                         Process process = Process.Start(tempfldr + @"\files\ep_setup.exe");
                         await process.WaitForExitAsync();
                         await PatcherHelper.RunAsyncCommands("regsvr32.exe", "/s \"%PROGRAMFILES%\\ExplorerPatcher\\ExplorerPatcher.amd64.dll\"", tempfldr);
-                        await Task.Run(() => PatcherHelper.RunAsyncCommands("reg.exe", "import " + tempfldr + @"\files\ep.reg", tempfldr));
-                        // todo: add start menu registry depending on user choice
+                        await Task.Run(() => PatcherHelper.RunAsyncCommands("reg.exe", "import " + tempfldr + @"\files\ep\basic.reg", tempfldr));
+                        if (epOptions.w10)
+                            await Task.Run(() => PatcherHelper.RunAsyncCommands("reg.exe", "import " + tempfldr + @"\files\ep\w10start.reg", tempfldr));
+                        else if (epOptions.w11)
+                            await Task.Run(() => PatcherHelper.RunAsyncCommands("reg.exe", "import " + tempfldr + @"\files\ep\w11start.reg", tempfldr));
+                        if (epOptions.w10TaskB)
+                            await Task.Run(() => PatcherHelper.RunAsyncCommands("reg.exe", "import " + tempfldr + @"\files\ep\w10taskb.reg", tempfldr));
+                        if (epOptions.micaExplorer)
+                            await Task.Run(() => PatcherHelper.RunAsyncCommands("reg.exe", "import " + tempfldr + @"\files\ep\micaexpl.reg", tempfldr));
                     }
                     RebootPage.Start();
                     Navigate(RebootPage);
