@@ -91,6 +91,7 @@ namespace Rectify11Installer
         /// </summary>
         /// <param name="options">Installer options</param>
         void Install(IRectifyInstalllerInstallOptions options, IRectifyInstalllerThemeOptions themeOptions);
+        Task<bool> InstallUserMode(IRectifyInstalllerInstallOptions options, IRectifyInstalllerThemeOptions themeOptions, IRectifyInstalllerEPOptions epOptions);
         /// <summary>
         /// Uninstall Rectify11
         /// </summary>
@@ -157,15 +158,18 @@ namespace Rectify11Installer
     public interface IRectifyInstalllerUninstallOptions
     {
         public bool RemoveExplorerPatcher { get; }
-        public bool RemoveThemesAndThemeTool { get; }
+        public bool RemoveWinver { get; }
         public bool RestoreWallpapers { get; }
+        public bool RemoveASDF { get; }
+
     }
     public class UninstallerOptions : IRectifyInstalllerUninstallOptions
     {
         public bool RemoveExplorerPatcher { get; set; }
 
-        public bool RemoveThemesAndThemeTool { get; set; }
+        public bool RemoveWinver { get; set; }
 
         public bool RestoreWallpapers { get; set; }
+        public bool RemoveASDF { get; set; }
     }
 }

@@ -126,7 +126,6 @@ namespace Rectify11Installer
             this.pnlMain.Name = "pnlMain";
             this.pnlMain.Size = new System.Drawing.Size(640, 366);
             this.pnlMain.TabIndex = 11;
-            this.pnlMain.Paint += new System.Windows.Forms.PaintEventHandler(this.pnlMain_Paint);
             // 
             // FrmWizard
             // 
@@ -145,7 +144,6 @@ namespace Rectify11Installer
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.Text = "Rectify11 Setup";
             this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.FrmWizard_FormClosing);
-            this.Load += new System.EventHandler(this.FrmWizard_Load);
             this.Shown += new System.EventHandler(this.Form1_Shown);
             this.pnlTop.ResumeLayout(false);
             this.pnlBottom.ResumeLayout(false);

@@ -5,6 +5,7 @@
         public FailUI()
         {
             InitializeComponent();
+            Cursor.Show();
         }
 
         private void btnRestart_Click(object sender, EventArgs e)

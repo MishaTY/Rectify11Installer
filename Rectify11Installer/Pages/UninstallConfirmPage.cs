@@ -9,8 +9,10 @@
 
         public bool RemoveExplorerPatcher => chkExplorerPatcher.Checked;
 
-        public bool RemoveThemesAndThemeTool => chkRemoveThemes.Checked;
+        public bool RemoveWinver => chkRemoveWinver.Checked;
 
-        public bool RestoreWallpapers => chkRestoreWallpaper.Checked;
+        public bool RestoreWallpapers => chkRemoveWallpapers.Checked;
+        public bool RemoveASDF => chkRemoveAsdf.Checked;
+
     }
 }

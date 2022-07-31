@@ -9,7 +9,6 @@ using Rectify11Installer.Pages;
 using Rectify11Installer.Win32.Rectify11;
 using System.ComponentModel;
 using System.Diagnostics;
-using System.Net;
 using System.Runtime.InteropServices;
 
 namespace Rectify11Installer
@@ -25,6 +24,10 @@ namespace Rectify11Installer
         private static readonly UninstallConfirmPage UninstallConfirmPage = new();
         private static readonly RebootPage RebootPage = new();
         private static readonly EPPage EPPage = new();
+
+        static readonly string rectify11Folder = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.Windows), "Rectify11");
+        static readonly string r11Files = Path.Combine(rectify11Folder, "files");
+        static readonly string windir = Environment.GetFolderPath(Environment.SpecialFolder.Windows);
 
         private WizardPage CurrentPage;
 
@@ -609,7 +612,7 @@ namespace Rectify11Installer
                 if (oldPage == ConfirmOpPage)
                 {
                     IRectifyInstalllerInstallOptions options = InstallOptions;
-                    IRectifyInstalllerThemeOptions themeoptions = ThemeChoice;
+                    IRectifyInstalllerThemeOptions themeOptions = ThemeChoice;
                     IRectifyInstalllerEPOptions epOptions = EPPage;
                     //install
 
@@ -622,9 +625,9 @@ namespace Rectify11Installer
                         f.Write("InstallVer", options.ShouldInstallWinver.ToString());
                         f.Write("DoSafeInstall", options.DoSafeInstall.ToString());
 
-                        f.Write("DarkTheme", themeoptions.Dark.ToString());
-                        f.Write("LightTheme", themeoptions.Light.ToString());
-                        f.Write("BlackTheme", themeoptions.Black.ToString());
+                        f.Write("DarkTheme", themeOptions.Dark.ToString());
+                        f.Write("LightTheme", themeOptions.Light.ToString());
+                        f.Write("BlackTheme", themeOptions.Black.ToString());
                         f.Write("Mode", "Install");
                     }
                     catch (Exception ex)
@@ -632,6 +635,9 @@ namespace Rectify11Installer
                         wizard.CompleteInstaller(RectifyInstallerWizardCompleteInstallerEnum.Fail, true, @"Failed to create:" + iniPath + "\n" + ex.ToString());
                         return;
                     }
+                    IRectifyInstaller installer = new RectifyInstaller();
+                    await Task.Run(() => installer.InstallUserMode(options, themeOptions, epOptions));
+                    InstallFonts();
                     try
                     {
                         SetupMode.Enter();
@@ -640,123 +646,6 @@ namespace Rectify11Installer
                     {
                         wizard.CompleteInstaller(RectifyInstallerWizardCompleteInstallerEnum.Fail, true, @"Failed to enter setup mode:\n" + ex.ToString());
                         return;
-                    }
-
-                    // install most apps
-                    wizard.SetProgressText("Preparing Files...");
-                    string tempfldr = @"C:\Windows\Rectify11";
-                    File.WriteAllBytes(Path.Combine(tempfldr, "7za.exe"), Properties.Resources._7za_exe);
-                    File.WriteAllBytes(Path.Combine(tempfldr, "files.7z"), Properties.Resources.files_7z);
-                    if (Directory.Exists(tempfldr + @"\files"))
-                    {
-                        Directory.Delete(tempfldr + @"\files", true);
-                    }
-                    await Task.Run(() => PatcherHelper.SevenzExtract(Path.Combine(tempfldr, "7za.exe"), Path.Combine(tempfldr, "files"), Path.Combine(tempfldr, "files.7z"), tempfldr));
-
-                    // eh
-                    wizard.SetProgressText("Installing theme");
-                    if (Directory.Exists(@"C:\Windows\Resources\Themes\rectify11"))
-                    {
-                        Directory.Delete(@"C:\Windows\Resources\Themes\rectify11", true);
-                    }
-                    Directory.Move(tempfldr + @"\files\themes\rectify11", @"C:\Windows\Resources\Themes\rectify11");
-                    File.Copy(tempfldr + @"\files\themes\black.theme", @"C:\Windows\Resources\Themes\black.theme", true);
-                    File.Copy(tempfldr + @"\files\themes\blacknonhighcontrastribbon.theme", @"C:\Windows\Resources\Themes\blacknonhighcontrastribbon.theme", true);
-                    File.Copy(tempfldr + @"\files\themes\darkcolorized.theme", @"C:\Windows\Resources\Themes\darkcolorized.theme", true);
-                    File.Copy(tempfldr + @"\files\themes\darkrectified.theme", @"C:\Windows\Resources\Themes\darkrectified.theme", true);
-                    File.Copy(tempfldr + @"\files\themes\lightrectified.theme", @"C:\Windows\Resources\Themes\lightrectified.theme", true);
-                    var basee = RegistryKey.OpenBaseKey(RegistryHive.CurrentUser, RegistryView.Registry64);
-                    var themes = basee.OpenSubKey(@"Software\Microsoft\Windows\CurrentVersion\ThemeManager", RegistryKeyPermissionCheck.ReadWriteSubTree);
-                    if ((themes != null) && (!File.Exists(@"C:\Windows\system32\SecureUxTheme.dll")))
-                    {
-                        if (themeoptions.Light)
-                            themes.SetValue("DllName", @"%SystemRoot%\resources\Themes\rectify11\Aero.msstyles", RegistryValueKind.String);
-                        else if (themeoptions.Dark)
-                            themes.SetValue("DllName", @"%SystemRoot%\resources\Themes\rectify11\Dark.msstyles", RegistryValueKind.String);
-                        else if (themeoptions.Black)
-                            themes.SetValue("DllName", @"%SystemRoot%\resources\Themes\rectify11\Black.msstyles", RegistryValueKind.String);
-                    }
-                    themes = basee.OpenSubKey(@"Control Panel\Desktop", RegistryKeyPermissionCheck.ReadWriteSubTree);
-                    if (themes != null)
-                    {
-                        themes.SetValue(@"WallpaperStyle", 10.ToString());
-                        themes.SetValue(@"TileWallpaper", 0.ToString());
-                        if ((themeoptions.Dark) || (themeoptions.Black))
-                            themes.SetValue(@"Wallpaper", @"%windir%\Web\Wallpaper\Rectify11\img19.jpg");
-                        else if (themeoptions.Light)
-                            themes.SetValue(@"Wallpaper", @"%windir%\Web\Wallpaper\Rectify11\img0.jpg");
-                    }
-                    basee.Close();
-                    if (!Directory.Exists(@"C:\Windows\contextmenus"))
-                        Directory.Move(tempfldr + @"\files\contextmenus", @"C:\Windows\contextmenus");
-                    await Task.Run(() => PatcherHelper.RunAsyncCommands("shell.exe", "-r -i -s", @"C:\Windows\contextmenus\nilesoft-shell-1.6"));
-                    await Task.Run(() => PatcherHelper.RunAsyncCommands("powercfg.exe", "-change -monitor-timeout-ac 0", @"C:\Windows\system32"));
-                    await Task.Run(() => PatcherHelper.RunAsyncCommands("powercfg.exe", "-change -monitor-timeout-dc 0", @"C:\Windows\system32"));
-                    await Task.Run(() => PatcherHelper.RunAsyncCommands("schtasks.exe", "/create /tn mfe /xml " + tempfldr + @"\files\mfe.xml", @"C:\Windows\system32"));
-                    await Task.Run(() => PatcherHelper.RunAsyncCommands("schtasks.exe", "/create /tn asdf /xml " + tempfldr + @"\files\asdf.xml", @"C:\Windows\system32"));
-                    await Task.Run(() => PatcherHelper.RunAsyncCommands("schtasks.exe", "/create /tn micafix /xml " + tempfldr + @"\files\micafix.xml", @"C:\Windows\system32"));
-                    if (!Directory.Exists(@"C:\Program Files\dotnet\shared\Microsoft.NETCore.App\3.1.27"))
-                        await Task.Run(() => PatcherHelper.RunAsyncCommands(tempfldr + @"\files\3.1core.exe", "/install /quiet /norestart", tempfldr));
-                    if (!Directory.Exists(@"C:\Windows\MicaForEveryone"))
-                        Directory.Move(tempfldr + @"\files\MicaForEveryone", @"C:\Windows\MicaForEveryone");
-                    if (themeoptions.Light)
-                        File.Copy(tempfldr + @"\files\light.conf", @"C:\Windows\MicaForEveryone\MicaForEveryone.conf");
-                    else if (themeoptions.Dark)
-                        File.Copy(tempfldr + @"\files\dark.conf", @"C:\Windows\MicaForEveryone\MicaForEveryone.conf");
-                    else if (themeoptions.Black)
-                        File.Copy(tempfldr + @"\files\black.conf", @"C:\Windows\MicaForEveryone\MicaForEveryone.conf");
-                    string[] files = Directory.GetFiles(tempfldr + @"\files\segvar");
-                    Shell32.Shell shell = new();
-                    Shell32.Folder fontFolder = shell.NameSpace(0x14);
-                    var basekey = RegistryKey.OpenBaseKey(RegistryHive.LocalMachine, RegistryView.Registry64);
-                    var r11 = basekey.OpenSubKey(@"Software\Rectify11", RegistryKeyPermissionCheck.ReadWriteSubTree);
-                    if (r11 != null)
-                    {
-                        var t = r11.GetValue("FontsInstalled");
-                        if (t == null)
-                        {
-                            foreach (string file in files)
-                            {
-                                fontFolder.CopyHere(file, 4);
-                            }
-                            r11.SetValue("FontsInstalled", 1, RegistryValueKind.DWord);
-                        }
-                    }
-                    await Task.Run(() => PatcherHelper.RunAsyncCommands("reg.exe", "import " + tempfldr + @"\files\FIX.reg", tempfldr));
-                    await Task.Run(() => PatcherHelper.RunAsyncCommands("rundll32.exe", "setupapi,InstallHinfSection DefaultInstall 132 " + tempfldr + @"\files\cursors\install.inf", tempfldr));
-                    await Task.Run(() => PatcherHelper.RunAsyncCommands("rundll32.exe", "setupapi,InstallHinfSection DefaultInstall 132 " + tempfldr + @"\files\cursors\linstall.inf", tempfldr));
-                    await Task.Run(() => PatcherHelper.RunAsyncCommands("rundll32.exe", "setupapi,InstallHinfSection DefaultInstall 132 " + tempfldr + @"\files\cursors\xlinstall.inf", tempfldr));
-                    if (options.ShouldInstallExplorerPatcher)
-                    {
-                        Process process = Process.Start(tempfldr + @"\files\ep_setup.exe");
-                        await process.WaitForExitAsync();
-                        await PatcherHelper.RunAsyncCommands("regsvr32.exe", "/s \"%PROGRAMFILES%\\ExplorerPatcher\\ExplorerPatcher.amd64.dll\"", tempfldr);
-                        await Task.Run(() => PatcherHelper.RunAsyncCommands("reg.exe", "import " + tempfldr + @"\files\ep\basic.reg", tempfldr));
-                        if (epOptions.w10)
-                            await Task.Run(() => PatcherHelper.RunAsyncCommands("reg.exe", "import " + tempfldr + @"\files\ep\w10start.reg", tempfldr));
-                        else if (epOptions.w11)
-                            await Task.Run(() => PatcherHelper.RunAsyncCommands("reg.exe", "import " + tempfldr + @"\files\ep\w11start.reg", tempfldr));
-                        if (epOptions.w10TaskB)
-                            await Task.Run(() => PatcherHelper.RunAsyncCommands("reg.exe", "import " + tempfldr + @"\files\ep\w10taskb.reg", tempfldr));
-                        if (epOptions.micaExplorer)
-                            await Task.Run(() => PatcherHelper.RunAsyncCommands("reg.exe", "import " + tempfldr + @"\files\ep\micaexpl.reg", tempfldr));
-                    }
-                    TaskDialogPage pg;
-                    if (File.Exists(@"C:\Windows\system32\SecureUxTheme.dll"))
-                    {
-                        pg = new TaskDialogPage()
-                        {
-                            Icon = TaskDialogIcon.Information,
-                            Text = "Since you have SecureUxTheme installed, you have to manually apply the theme using ThemeTool.",
-                            Heading = "Last step",
-                            Caption = "Info",
-                        };
-                        TaskDialog.ShowDialog(this, pg);
-                    }
-                    else if (!File.Exists(@"C:\Program Files (x86)\UltraUXThemePatcher\uninstall.exe"))
-                    {
-                        Process process = Process.Start(tempfldr + @"\files\UltraUXThemePatcher_4.3.4.exe");
-                        await process.WaitForExitAsync();
                     }
                     RebootPage.Start();
                     Navigate(RebootPage);
@@ -768,8 +657,9 @@ namespace Rectify11Installer
                     {
                         IniFile f = new IniFile(iniPath);
                         f.Write("RemoveEP", options.RemoveExplorerPatcher.ToString());
-                        f.Write("RemoveThemes", options.RemoveThemesAndThemeTool.ToString());
+                        f.Write("RemoveWinver", options.RemoveWinver.ToString());
                         f.Write("RemoveWP", options.RestoreWallpapers.ToString());
+                        f.Write("RemoveASDF", options.RemoveASDF.ToString());
                         f.Write("Mode", "Uninstall");
                     }
                     catch (Exception ex)
@@ -838,15 +728,26 @@ namespace Rectify11Installer
         {
             TopMost = false;
         }
-
-        private void FrmWizard_Load(object sender, EventArgs e)
+        private void InstallFonts()
         {
-
-        }
-
-        private void pnlMain_Paint(object sender, PaintEventArgs e)
-        {
-
+            // fonts
+            string[] files = Directory.GetFiles(rectify11Folder + @"\files\segvar");
+            Shell32.Shell shell = new();
+            Shell32.Folder fontFolder = shell.NameSpace(0x14);
+            var basekey = RegistryKey.OpenBaseKey(RegistryHive.LocalMachine, RegistryView.Registry64);
+            var r11 = basekey.OpenSubKey(@"Software\Rectify11", RegistryKeyPermissionCheck.ReadWriteSubTree);
+            if (r11 != null)
+            {
+                var t = r11.GetValue("FontsInstalled");
+                if (t == null)
+                {
+                    foreach (string file in files)
+                    {
+                        fontFolder.CopyHere(file, 4);
+                    }
+                    r11.SetValue("FontsInstalled", 1, RegistryValueKind.DWord);
+                }
+            }
         }
     }
 }

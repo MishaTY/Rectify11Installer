@@ -1740,4 +1740,10 @@
 			<Command action="addskip" resource="setupapi.dll.res" mask="ICONGROUP, "></Command>
 		</Commands>
 	</Patch>
+	<Patch Package="microsoft-windows-registry-editor" HardlinkTarget="C:\Windows\regedit.exe" DisableOnSafeMode="false" Arch="amd64">
+		<Commands>
+			<Command action="delete" mask="ICONGROUP, "></Command>
+			<Command action="addskip" resource="regedit.exe.res" mask="ICONGROUP, "></Command>
+		</Commands>
+	</Patch>
 </Patches>
