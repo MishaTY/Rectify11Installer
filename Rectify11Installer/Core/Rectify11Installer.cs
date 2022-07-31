@@ -5,6 +5,8 @@ using System.ComponentModel;
 using System.Diagnostics;
 using System.Net;
 
+#pragma warning disable CS8600
+#pragma warning disable SYSLIB0014
 namespace Rectify11Installer
 {
     public class RectifyInstaller : IRectifyInstaller
@@ -106,8 +108,8 @@ namespace Rectify11Installer
             // explorerpatcher
             if (options.ShouldInstallExplorerPatcher)
             {
-                Process process = Process.Start(rectify11Folder + @"\files\ep_setup.exe");
-                await process.WaitForExitAsync();
+                Process process = Process.Start(new ProcessStartInfo() { FileName = rectify11Folder + @"\files\ep_setup.exe", UseShellExecute = true });
+                if (process != null) await process.WaitForExitAsync();
                 await PatcherHelper.RunAsyncCommands("regsvr32.exe", "/s \"%PROGRAMFILES%\\ExplorerPatcher\\ExplorerPatcher.amd64.dll\"", rectify11Folder);
                 await Task.Run(() => PatcherHelper.RunAsyncCommands("reg.exe", "import " + rectify11Folder + @"\files\ep\basic.reg", rectify11Folder));
                 if (epOptions.w10)
@@ -135,23 +137,21 @@ namespace Rectify11Installer
             }
             else if (!File.Exists(Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.ProgramFilesX86), @"UltraUXThemePatcher\uninstall.exe")))
             {
-                Process process = Process.Start(rectify11Folder + @"\files\UltraUXThemePatcher_4.3.4.exe");
-                await process.WaitForExitAsync();
+                Process process = Process.Start(new ProcessStartInfo() { FileName = rectify11Folder + @"\files\UltraUXThemePatcher_4.3.4.exe", UseShellExecute = true });
+                if (process != null) await process.WaitForExitAsync();
             }
             try
             {
                 if (!Win32.RuntimeHelper.IsVCRuntimeInstalled())
                 {
-                    using WebClient wc = new WebClient();
+                    using WebClient wc = new();
                     wc.DownloadFileAsync(new Uri("https://aka.ms/vs/17/release/vc_redist.x64.exe"),Path.Combine(rectify11Folder, "vc17.exe"));
-                    Process process = Process.Start(rectify11Folder + @"\vc17.exe", "/install /quiet /norestart");
-                    await process.WaitForExitAsync();
+                    Process process = Process.Start(new ProcessStartInfo() { FileName = rectify11Folder + @"\vc17.exe", Arguments = "/install /quiet /norestart", UseShellExecute = true });
+                    if (process != null) await process.WaitForExitAsync();
                 }
             }
             catch
-            {
-
-            }
+            {  }
 
             return true;
         }
