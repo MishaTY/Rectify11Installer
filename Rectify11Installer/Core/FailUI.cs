@@ -6,6 +6,7 @@
         {
             InitializeComponent();
             Cursor.Show();
+            Focus();
         }
 
         private void btnRestart_Click(object sender, EventArgs e)
@@ -14,9 +15,9 @@
             SetupMode.RebootSystem();
         }
 
-        private void FailUI_KeyDown(object sender, KeyEventArgs e)
+        private void FailUI_KeyPress(object sender, KeyPressEventArgs e)
         {
-            if (e.KeyData == Keys.Enter)
+            if (e.KeyChar == 13)
             {
                 TopMost = false;
                 SetupMode.RebootSystem();

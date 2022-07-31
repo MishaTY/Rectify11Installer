@@ -34,7 +34,7 @@
             this.darkAwareFlowLayoutPanel1 = new Rectify11Installer.Controls.DarkAwareFlowLayoutPanel();
             this.label3 = new System.Windows.Forms.Label();
             this.InfoLabel = new System.Windows.Forms.Label();
-            this.btnRestart = new Rectify11Installer.Controls.WinUIButton();
+            this.label4 = new System.Windows.Forms.Label();
             this.darkAwareFlowLayoutPanel1.SuspendLayout();
             this.SuspendLayout();
             // 
@@ -91,16 +91,15 @@
             this.InfoLabel.TabIndex = 3;
             this.InfoLabel.Text = resources.GetString("InfoLabel.Text");
             // 
-            // btnRestart
+            // label4
             // 
-            this.btnRestart.BackColor = System.Drawing.Color.Transparent;
-            this.btnRestart.ButtonText = "Restart now";
-            this.btnRestart.ForeColor = System.Drawing.Color.Black;
-            this.btnRestart.Location = new System.Drawing.Point(578, 406);
-            this.btnRestart.Name = "btnRestart";
-            this.btnRestart.Size = new System.Drawing.Size(75, 28);
-            this.btnRestart.TabIndex = 3;
-            this.btnRestart.Click += new System.EventHandler(this.btnRestart_Click);
+            this.label4.AutoSize = true;
+            this.label4.Font = new System.Drawing.Font("Segoe UI Variable Small", 11.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
+            this.label4.Location = new System.Drawing.Point(521, 412);
+            this.label4.Name = "label4";
+            this.label4.Size = new System.Drawing.Size(164, 20);
+            this.label4.TabIndex = 3;
+            this.label4.Text = "Press ENTER to restart.";
             // 
             // FailUI
             // 
@@ -108,7 +107,7 @@
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.Color.Black;
             this.ClientSize = new System.Drawing.Size(800, 450);
-            this.Controls.Add(this.btnRestart);
+            this.Controls.Add(this.label4);
             this.Controls.Add(this.darkAwareFlowLayoutPanel1);
             this.Controls.Add(this.label1);
             this.ForeColor = System.Drawing.Color.White;
@@ -119,7 +118,7 @@
             this.Text = "FailUI";
             this.TopMost = true;
             this.WindowState = System.Windows.Forms.FormWindowState.Maximized;
-            this.KeyDown += new System.Windows.Forms.KeyEventHandler(this.FailUI_KeyDown);
+            this.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.FailUI_KeyPress);
             this.darkAwareFlowLayoutPanel1.ResumeLayout(false);
             this.darkAwareFlowLayoutPanel1.PerformLayout();
             this.ResumeLayout(false);
@@ -134,6 +133,6 @@
         private Controls.DarkAwareFlowLayoutPanel darkAwareFlowLayoutPanel1;
         private Label label3;
         public Label InfoLabel;
-        private Controls.WinUIButton btnRestart;
+        private Label label4;
     }
 }

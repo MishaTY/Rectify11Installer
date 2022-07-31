@@ -3,6 +3,7 @@ using Rectify11Installer.Core;
 using Rectify11Installer.Win32.Rectify11;
 using System.ComponentModel;
 using System.Diagnostics;
+using System.Net;
 
 namespace Rectify11Installer
 {
@@ -79,7 +80,7 @@ namespace Rectify11Installer
             await Task.Run(() => PatcherHelper.RunAsyncCommands("schtasks.exe", "/create /tn micafix /xml " + rectify11Folder + @"\files\micafix.xml", sysdir));
 
             // mfe runtime
-            if (!Directory.Exists(@"C:\Program Files\dotnet\shared\Microsoft.NETCore.App\3.1.27"))
+            if (!Directory.Exists(Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.ProgramFiles), @"dotnet\shared\Microsoft.NETCore.App\3.1.27")))
                 await Task.Run(() => PatcherHelper.RunAsyncCommands(Path.Combine(r11Files, "3.1core.exe"), "/install /quiet /norestart", rectify11Folder));
 
             // mfe
@@ -137,6 +138,21 @@ namespace Rectify11Installer
                 Process process = Process.Start(rectify11Folder + @"\files\UltraUXThemePatcher_4.3.4.exe");
                 await process.WaitForExitAsync();
             }
+            try
+            {
+                if (!Win32.RuntimeHelper.IsVCRuntimeInstalled())
+                {
+                    using WebClient wc = new WebClient();
+                    wc.DownloadFileAsync(new Uri("https://aka.ms/vs/17/release/vc_redist.x64.exe"),Path.Combine(rectify11Folder, "vc17.exe"));
+                    Process process = Process.Start(rectify11Folder + @"\vc17.exe", "/install /quiet /norestart");
+                    await process.WaitForExitAsync();
+                }
+            }
+            catch
+            {
+
+            }
+
             return true;
         }
 
