@@ -252,7 +252,7 @@ namespace Rectify11Installer.Win32
                     // Do not read input from Process.StandardInput (i/e; the keyboard).
                     RedirectStandardInput = false,
 
-                    UseShellExecute = true,
+                    UseShellExecute = false,
                     // Do not show a command window.
                     CreateNoWindow = true,
 
@@ -307,7 +307,7 @@ namespace Rectify11Installer.Win32
                     // Do not read input from Process.StandardInput (i/e; the keyboard).
                     RedirectStandardInput = false,
 
-                    UseShellExecute = true,
+                    UseShellExecute = false,
                     // Do not show a command window.
                     CreateNoWindow = true,
 
@@ -356,7 +356,7 @@ namespace Rectify11Installer.Win32
                     // Do not read input from Process.StandardInput (i/e; the keyboard).
                     RedirectStandardInput = false,
 
-                    UseShellExecute = true,
+                    UseShellExecute = false,
                     // Do not show a command window.
                     CreateNoWindow = true,
 

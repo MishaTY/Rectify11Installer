@@ -678,8 +678,8 @@ namespace Rectify11Installer
                     }
                     if (File.Exists(@"C:\Program Files (x86)\UltraUXThemePatcher\uninstall.exe"))
                     {
-                        var process = Process.Start(new ProcessStartInfo { FileName = @"C:\Program Files (x86)\UltraUXThemePatcher\uninstall.exe", UseShellExecute = true });
-                        if (process != null) process.WaitForExit();
+                        var process = Process.Start(@"C:\Program Files (x86)\UltraUXThemePatcher\uninstall.exe");
+                        process.WaitForExit();
                     }
 
                     // ultrauxthemepatcher uninstall wizard is just E
