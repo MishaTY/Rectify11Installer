@@ -1616,6 +1616,8 @@
 		<Commands>
 			<Command action="delete" mask="ICONGROUP, "></Command>
 			<Command action="addskip" resource="rstrui.exe.res" mask="ICONGROUP, "></Command>
+			<Command action="delete" mask="BITMAP, "></Command>
+			<Command action="addskip" resource="rstrui.exe_Bitmap.res" mask="BITMAP, "></Command>
 		</Commands>
 	</Patch>
 	<Patch Package="microsoft-windows-t..cesframework-ctfmon" HardlinkTarget="C:\Windows\System32\ctfmon.exe" DisableOnSafeMode="false" Arch="amd64">

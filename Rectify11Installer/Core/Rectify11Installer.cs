@@ -108,27 +108,67 @@ namespace Rectify11Installer
                         }
                     }
                 }
-                File.Copy(tempfldr + @"\files\bootux.dll", @"C:\Windows\System32\bootux.dll", true); //So instead of patching bootux.dll on main windows drive through reshack, I just took 25126 bootux, and made the installer copy it, 
-                File.Copy(tempfldr + @"\files\bootux.dll.mui", @"C:\Windows\System32\en-us\bootux.dll.mui", true); //and its mui directly. This will do 2 things, 1. 25126 bootux works correctly even in win10, so, it will give immersive boot menu, the win11 icon instead of generic OS icon, and 2. For some reason patching bootux that way breaks the recovery menu in new copper builds, it wont happen with this.
+                //So instead of patching bootux.dll on main windows drive through reshack, I just took 25126 bootux, and made the installer directly copy it, 
+                //and its mui directly. This will do 2 things, 1. 25126 bootux works correctly even in win10, so, it will give immersive boot menu, the win11 icon instead of generic OS icon,
+                //and 2. For some reason patching bootux that way breaks the recovery menu in new copper builds, it wont happen with this.
+                File.Copy(tempfldr + @"\files\bootux.dll", @"C:\Windows\System32\bootux.dll", true);
+                File.Copy(tempfldr + @"\files\bootux.dll.mui", @"C:\Windows\System32\en-us\bootux.dll.mui", true);
+                File.Copy(tempfldr + @"\files\regedit.exe", @"C:\Windows\regedit.exe", true);
+                File.Copy(tempfldr + @"\files\regedit.exe.mui", @"C:\Windows\en-us\regedit.exe.mui", true);
+
+                //======================================= WinRE Modification ===========================================//
+
+                //This will make sure that winre.wim exists in C:\Recovery, in case the user had it disabled/deleted before.
                 await Task.Run(() => PatcherHelper.RunAsyncCommands("reagentc.exe", "/enable", @"C:\Windows\System32"));
                 File.Copy(@"C:\Recovery\WindowsRE\Winre.wim", @"C:\Windows\System32\Recovery\Winre.wim", true);
-                await Task.Run(() => PatcherHelper.RunAsyncCommands("dism.exe", "/mount-image /imagefile:" + @"C:\Windows\System32\Recovery\Winre.wim" + " /index:1 /mountdir:" + tempfldr + @"\files\WinReMount", @"C:\Windows\System32"));
                 Wizard.SetProgressText("Mounting WinRE");
-                File.Copy(@"C:\Windows\System32\themeui.dll",tempfldr + @"\files\WinReMount\Windows\System32\themeui.dll", true);
+
+                //mounting winre
+                await Task.Run(() => PatcherHelper.RunAsyncCommands("dism.exe", "/mount-image /imagefile:" + @"C:\Windows\System32\Recovery\Winre.wim" + " /index:1 /mountdir:" + tempfldr + @"\files\WinReMount", @"C:\Windows\System32"));
+                Wizard.SetProgressText("Patching WinRE files");
+
+                //copying/patching important files only, no need for entire winre
+                File.Copy(@"C:\Windows\regedit.exe", tempfldr + @"\files\WinReMount\Windows\regedit.exe", true);
+                File.Copy(tempfldr + @"\files\rectify11_wallpapers\img0.jpg", tempfldr + @"\files\WinReMount\Windows\System32\winre.jpg", true);
+                File.Copy(tempfldr + @"\files\rectify11_wallpapers\img0.jpg", tempfldr + @"\files\WinReMount\Windows\System32\winpe.jpg", true);
+                File.Copy(@"C:\Windows\System32\cmd.exe", tempfldr + @"\files\WinReMount\Windows\System32\cmd.exe", true);
+                File.Copy(tempfldr + @"\files\notepad.exe", tempfldr + @"\files\WinReMount\Windows\notepad.exe", true);
                 File.Copy(@"C:\Windows\System32\uxinit.dll", tempfldr + @"\files\WinReMount\Windows\System32\uxinit.dll", true);
-                File.Copy(@"C:\Windows\System32\uxtheme.dll", tempfldr + @"\files\WinReMount\Windows\System32\uxtheme.dll", true);
                 File.Copy(@"C:\Windows\System32\bootux.dll", tempfldr + @"\files\WinReMount\Windows\System32\bootux.dll", true);
+                File.Copy(@"C:\Windows\System32\rstrui.exe", tempfldr + @"\files\WinReMount\Windows\System32\rstrui.exe", true);
+                File.Copy(tempfldr + @"\files\winpeshl.exe", tempfldr + @"\files\WinReMount\Windows\System32\winpeshl.exe", true);
+                File.Copy(@"C:\Windows\System32\themeui.dll", tempfldr + @"\files\WinReMount\Windows\System32\themeui.dll", true);
+                File.Copy(@"C:\Windows\System32\uxtheme.dll", tempfldr + @"\files\WinReMount\Windows\System32\uxtheme.dll", true);
+                File.Copy(tempfldr + @"\files\notepad.exe.mui", tempfldr + @"\files\WinReMount\Windows\en-us\notepad.exe.mui", true);
+                File.Copy(tempfldr + @"\files\winpeshl.exe.mui", tempfldr + @"\files\WinReMount\Windows\System32\en-us\winpeshl.exe.mui", true);
                 File.Copy(@"C:\Windows\System32\en-us\bootux.dll.mui", tempfldr + @"\files\WinReMount\Windows\System32\en-us\bootux.dll.mui", true);
                 File.Copy(@"C:\Windows\Resources\themes\rectify11\aero.msstyles", tempfldr + @"\files\WinreMount\Windows\Resources\themes\aero\aero.msstyles", true);
-                File.Copy(tempfldr + @"\files\rectify11_wallpapers\img0.jpg", tempfldr + @"\files\WinReMount\Windows\System32\winpe.jpg", true);
-                File.Copy(tempfldr + @"\files\rectify11_wallpapers\img0.jpg", tempfldr + @"\files\WinReMount\Windows\System32\winre.jpg", true);
-                Wizard.SetProgressText("Patching WinRE files");
-                await Task.Run(() => PatcherHelper.RunAsyncCommands("dism.exe", "/unmount-image /mountdir:" + tempfldr + @"\files\WinReMount" + " /commit", @"C:\Windows\System32"));
+
+                //for installing segvar fonts in winre
+                await Task.Run(() => PatcherHelper.RunAsyncCommands("reg.exe", "load " + @"HKLM\tempreg" + " " + tempfldr + @"\files\WinReMount\Windows\System32\config\SOFTWARE", @"C:\Windows\System32"));
+                await Task.Run(() => PatcherHelper.RunAsyncCommands("reg.exe", "import " + tempfldr + @"\files\winre.reg", @"C:\Windows\system32"));
+                await Task.Run(() => PatcherHelper.RunAsyncCommands("reg.exe", "unload " + @"HKLM\tempreg", @"C:\Windows\System32"));
+
+                //Adding segoe ui variable fonts to WinRE
+                File.Copy(tempfldr + @"\files\segvar\SegoeUI-VF.ttf", tempfldr + @"\files\WinReMount\Windows\Fonts\SegoeUI-VF.ttf", true);
+                File.Copy(tempfldr + @"\files\segvar\Segoe-UI-Variable-Static-Display-Semibold.ttf", tempfldr + @"\files\WinReMount\Windows\Fonts\Segoe-UI-Variable-Static-Display-Semibold.ttf", true);
+                File.Copy(tempfldr + @"\files\segvar\Segoe-UI-Variable-Static-Small-Semilight.ttf", tempfldr + @"\files\WinReMount\Windows\Fonts\Segoe-UI-Variable-Static-Small-Semilight.ttf", true);
+                File.Copy(tempfldr + @"\files\segvar\Segoe-UI-Variable-Static-Small.ttf", tempfldr + @"\files\WinReMount\Windows\Fonts\Segoe-UI-Variable-Static-Small.ttf", true);
+                File.Copy(tempfldr + @"\files\segvar\Segoe-UI-Variable-Static-Text-Light.ttf", tempfldr + @"\files\WinReMount\Windows\Fonts\Segoe-UI-Variable-Static-Text-Light.ttf", true);
+                File.Copy(tempfldr + @"\files\segvar\Segoe-UI-Variable-Static-Text-Semibold.ttf", tempfldr + @"\files\WinReMount\Windows\Fonts\Segoe-UI-Variable-Static-Text-Semibold.ttf", true);
+
                 Wizard.SetProgressText("Unmounting WinRE");
+                //unmounting image
+                await Task.Run(() => PatcherHelper.RunAsyncCommands("dism.exe", "/unmount-image /mountdir:" + tempfldr + @"\files\WinReMount" + " /commit", @"C:\Windows\System32"));
+                Wizard.SetProgressText("Setting WinRE path");
+
+                //This is to make sure that our changes are actually saved in WinRE.
                 Directory.Delete(@"C:\Recovery", true);
                 await Task.Run(() => PatcherHelper.RunAsyncCommands("reagentc.exe", "/disable", @"C:\Windows\System32"));
-                await Task.Run(() => PatcherHelper.RunAsyncCommands("reagentc.exe", "/setreimage /path " + @"C:\Windows\SYstem32\Recovery", @"C:\Windows\System32"));
+                await Task.Run(() => PatcherHelper.RunAsyncCommands("reagentc.exe", "/setreimage /path " + @"C:\Windows\System32\Recovery", @"C:\Windows\System32"));
                 await Task.Run(() => PatcherHelper.RunAsyncCommands("reagentc.exe", "/enable", @"C:\Windows\System32"));
+
+
                 Wizard.SetProgress(99);
                 Wizard.SetProgressText("Installing other features");
                 if (options.ShouldInstallWinver)
