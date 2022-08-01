@@ -169,7 +169,7 @@ namespace Rectify11Installer
 
                 #region Setup
                 Wizard.SetProgress(0);
-                Wizard.SetProgressText("Initializing...");
+                Wizard.SetProgressText("Initializing");
                 var backupDir = Path.Combine(rectify11Folder, "Backup");
                 #endregion
 
