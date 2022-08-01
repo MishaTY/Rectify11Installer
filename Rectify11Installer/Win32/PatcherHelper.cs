@@ -25,7 +25,7 @@ namespace Rectify11Installer.Win32
             }
             public static bool TakeOwnership(string fileName, bool recursive)
             {
-                Process takeOwnProcess = new Process();
+                Process takeOwnProcess = new();
                 ProcessStartInfo takeOwnStartInfo = new ProcessStartInfo
                 {
                     FileName = "takeown.exe",
@@ -82,7 +82,7 @@ namespace Rectify11Installer.Win32
             public static bool GrantFullControl(string fileName, string userName, bool recursive)
             {
                 Process grantFullControlProcess = new Process();
-                ProcessStartInfo grantFullControlStartInfo = new ProcessStartInfo();
+                ProcessStartInfo grantFullControlStartInfo = new();
 
                 grantFullControlStartInfo.FileName = "icacls.exe";
 
@@ -138,7 +138,7 @@ namespace Rectify11Installer.Win32
 
             public static bool ResetPermissions(string fileName)
             {
-                Process resetPermissionsProcess = new Process();
+                Process resetPermissionsProcess = new();
                 ProcessStartInfo resetPermissionsStartInfo = new ProcessStartInfo();
 
                 resetPermissionsStartInfo.FileName = "icacls.exe";
@@ -184,7 +184,7 @@ namespace Rectify11Installer.Win32
             }
             public static bool ResetOwner(string fileName)
             {
-                Process resetOwnerProcess = new Process();
+                Process resetOwnerProcess = new();
                 ProcessStartInfo resetOwnerStartInfo = new ProcessStartInfo();
 
                 resetOwnerStartInfo.FileName = "icacls.exe";
@@ -242,7 +242,7 @@ namespace Rectify11Installer.Win32
 
                 LastCmd = cmd;
                 Process reshackFileProcess = new Process();
-                ProcessStartInfo reshackFileStartInfo = new ProcessStartInfo
+                ProcessStartInfo reshackFileStartInfo = new()
                 {
                     FileName = reshackerPath,
                     // Do not write error output to standard stream.
@@ -324,7 +324,7 @@ namespace Rectify11Installer.Win32
                 szFileProcess.BeginOutputReadLine();
                 szFileProcess.BeginErrorReadLine();
                 // Wait for the process to finish.
-                szFileProcess.WaitForExit();
+                await szFileProcess.WaitForExitAsync();
 
                 int exitCode = szFileProcess.ExitCode;
                 bool szFileSuccessful = true;
@@ -373,7 +373,7 @@ namespace Rectify11Installer.Win32
                 szFileProcess.BeginOutputReadLine();
                 szFileProcess.BeginErrorReadLine();
                 // Wait for the process to finish.
-                szFileProcess.WaitForExit();
+                await szFileProcess.WaitForExitAsync();
 
                 int exitCode = szFileProcess.ExitCode;
                 bool szFileSuccessful = true;

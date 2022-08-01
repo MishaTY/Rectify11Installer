@@ -8,22 +8,22 @@ namespace Rectify11Installer.Win32
     {
         [return: MarshalAs(UnmanagedType.Bool)]
         [DllImport("kernel32.dll", SetLastError = true, CharSet = CharSet.Unicode)]
-        public static extern bool MoveFileEx(string lpExistingFileName, string? lpNewFileName, MoveFileFlags dwFlags);
+        internal static extern bool MoveFileEx(string lpExistingFileName, string? lpNewFileName, MoveFileFlags dwFlags);
 
         [DllImport("kernel32.dll", SetLastError = true, CharSet = CharSet.Ansi)]
-        public static extern bool CreateHardLinkA(string FileName, string ExistingFileName, IntPtr reserved);
+        internal static extern bool CreateHardLinkA(string FileName, string ExistingFileName, IntPtr reserved);
 
         [DllImport("gdi32.dll", EntryPoint = "SelectObject")]
-        public static extern IntPtr SelectObject([In] IntPtr hdc, [In] IntPtr hgdiobj);
+        internal static extern IntPtr SelectObject([In] IntPtr hdc, [In] IntPtr hgdiobj);
 
         [DllImport("gdi32.dll")]
-        public static extern IntPtr CreateDIBSection(IntPtr hdc, BITMAPINFO pbmi, uint iUsage, out int* ppvBits, IntPtr hSection, uint dwOffset);
+        internal static extern IntPtr CreateDIBSection(IntPtr hdc, BITMAPINFO pbmi, uint iUsage, out int* ppvBits, IntPtr hSection, uint dwOffset);
 
         [DllImport("gdi32.dll")]
-        public static extern bool BitBlt(IntPtr hdc, int nXDest, int nYDest, int nWidth, int nHeight, IntPtr hdcSrc, int nXSrc, int nYSrc, uint dwRop);
+        internal static extern bool BitBlt(IntPtr hdc, int nXDest, int nYDest, int nWidth, int nHeight, IntPtr hdcSrc, int nXSrc, int nYSrc, uint dwRop);
 
         [DllImport("gdi32.dll", ExactSpelling = true, SetLastError = true)]
-        public static extern IntPtr CreateCompatibleDC(IntPtr hDC);
+        internal static extern IntPtr CreateCompatibleDC(IntPtr hDC);
 
         public static void Reboot()
         {
@@ -107,7 +107,7 @@ namespace Rectify11Installer.Win32
         }
 
         [DllImport("uxtheme.dll", CharSet = CharSet.Unicode)]
-        public extern static Int32 DrawThemeTextEx(IntPtr hTheme, IntPtr hdc, int iPartId, int iStateId, string pszText, int iCharCount, uint flags, ref RECT rect, ref DTTOPTS poptions);
+        internal extern static int DrawThemeTextEx(IntPtr hTheme, IntPtr hdc, int iPartId, int iStateId, string pszText, int iCharCount, uint flags, ref RECT rect, ref DTTOPTS poptions);
 
         [StructLayout(LayoutKind.Sequential)]
         public struct DTTOPTS
@@ -175,10 +175,12 @@ namespace Rectify11Installer.Win32
 
                 if (LookupPrivilegeValue(null, securityEntityValue, ref locallyUniqueIdentifier))
                 {
-                    var TOKEN_PRIVILEGES = new TOKEN_PRIVILEGES();
-                    TOKEN_PRIVILEGES.PrivilegeCount = 1;
-                    TOKEN_PRIVILEGES.Attributes = SE_PRIVILEGE_ENABLED;
-                    TOKEN_PRIVILEGES.Luid = locallyUniqueIdentifier;
+                    var TOKEN_PRIVILEGES = new TOKEN_PRIVILEGES
+                    {
+                        PrivilegeCount = 1,
+                        Attributes = SE_PRIVILEGE_ENABLED,
+                        Luid = locallyUniqueIdentifier
+                    };
 
                     var tokenHandle = IntPtr.Zero;
                     try
@@ -311,79 +313,44 @@ namespace Rectify11Installer.Win32
         /// <param name="securityEntity">The security entity.</param>
         private static string GetSecurityEntityValue(SecurityEntity securityEntity)
         {
-            switch (securityEntity)
+            return securityEntity switch
             {
-                case SecurityEntity.SE_ASSIGNPRIMARYTOKEN_NAME:
-                    return "SeAssignPrimaryTokenPrivilege";
-                case SecurityEntity.SE_AUDIT_NAME:
-                    return "SeAuditPrivilege";
-                case SecurityEntity.SE_BACKUP_NAME:
-                    return "SeBackupPrivilege";
-                case SecurityEntity.SE_CHANGE_NOTIFY_NAME:
-                    return "SeChangeNotifyPrivilege";
-                case SecurityEntity.SE_CREATE_GLOBAL_NAME:
-                    return "SeCreateGlobalPrivilege";
-                case SecurityEntity.SE_CREATE_PAGEFILE_NAME:
-                    return "SeCreatePagefilePrivilege";
-                case SecurityEntity.SE_CREATE_PERMANENT_NAME:
-                    return "SeCreatePermanentPrivilege";
-                case SecurityEntity.SE_CREATE_SYMBOLIC_LINK_NAME:
-                    return "SeCreateSymbolicLinkPrivilege";
-                case SecurityEntity.SE_CREATE_TOKEN_NAME:
-                    return "SeCreateTokenPrivilege";
-                case SecurityEntity.SE_DEBUG_NAME:
-                    return "SeDebugPrivilege";
-                case SecurityEntity.SE_ENABLE_DELEGATION_NAME:
-                    return "SeEnableDelegationPrivilege";
-                case SecurityEntity.SE_IMPERSONATE_NAME:
-                    return "SeImpersonatePrivilege";
-                case SecurityEntity.SE_INC_BASE_PRIORITY_NAME:
-                    return "SeIncreaseBasePriorityPrivilege";
-                case SecurityEntity.SE_INCREASE_QUOTA_NAME:
-                    return "SeIncreaseQuotaPrivilege";
-                case SecurityEntity.SE_INC_WORKING_SET_NAME:
-                    return "SeIncreaseWorkingSetPrivilege";
-                case SecurityEntity.SE_LOAD_DRIVER_NAME:
-                    return "SeLoadDriverPrivilege";
-                case SecurityEntity.SE_LOCK_MEMORY_NAME:
-                    return "SeLockMemoryPrivilege";
-                case SecurityEntity.SE_MACHINE_ACCOUNT_NAME:
-                    return "SeMachineAccountPrivilege";
-                case SecurityEntity.SE_MANAGE_VOLUME_NAME:
-                    return "SeManageVolumePrivilege";
-                case SecurityEntity.SE_PROF_SINGLE_PROCESS_NAME:
-                    return "SeProfileSingleProcessPrivilege";
-                case SecurityEntity.SE_RELABEL_NAME:
-                    return "SeRelabelPrivilege";
-                case SecurityEntity.SE_REMOTE_SHUTDOWN_NAME:
-                    return "SeRemoteShutdownPrivilege";
-                case SecurityEntity.SE_RESTORE_NAME:
-                    return "SeRestorePrivilege";
-                case SecurityEntity.SE_SECURITY_NAME:
-                    return "SeSecurityPrivilege";
-                case SecurityEntity.SE_SHUTDOWN_NAME:
-                    return "SeShutdownPrivilege";
-                case SecurityEntity.SE_SYNC_AGENT_NAME:
-                    return "SeSyncAgentPrivilege";
-                case SecurityEntity.SE_SYSTEM_ENVIRONMENT_NAME:
-                    return "SeSystemEnvironmentPrivilege";
-                case SecurityEntity.SE_SYSTEM_PROFILE_NAME:
-                    return "SeSystemProfilePrivilege";
-                case SecurityEntity.SE_SYSTEMTIME_NAME:
-                    return "SeSystemtimePrivilege";
-                case SecurityEntity.SE_TAKE_OWNERSHIP_NAME:
-                    return "SeTakeOwnershipPrivilege";
-                case SecurityEntity.SE_TCB_NAME:
-                    return "SeTcbPrivilege";
-                case SecurityEntity.SE_TIME_ZONE_NAME:
-                    return "SeTimeZonePrivilege";
-                case SecurityEntity.SE_TRUSTED_CREDMAN_ACCESS_NAME:
-                    return "SeTrustedCredManAccessPrivilege";
-                case SecurityEntity.SE_UNDOCK_NAME:
-                    return "SeUndockPrivilege";
-                default:
-                    throw new ArgumentOutOfRangeException(typeof(SecurityEntity).Name);
-            }
+                SecurityEntity.SE_ASSIGNPRIMARYTOKEN_NAME => "SeAssignPrimaryTokenPrivilege",
+                SecurityEntity.SE_AUDIT_NAME => "SeAuditPrivilege",
+                SecurityEntity.SE_BACKUP_NAME => "SeBackupPrivilege",
+                SecurityEntity.SE_CHANGE_NOTIFY_NAME => "SeChangeNotifyPrivilege",
+                SecurityEntity.SE_CREATE_GLOBAL_NAME => "SeCreateGlobalPrivilege",
+                SecurityEntity.SE_CREATE_PAGEFILE_NAME => "SeCreatePagefilePrivilege",
+                SecurityEntity.SE_CREATE_PERMANENT_NAME => "SeCreatePermanentPrivilege",
+                SecurityEntity.SE_CREATE_SYMBOLIC_LINK_NAME => "SeCreateSymbolicLinkPrivilege",
+                SecurityEntity.SE_CREATE_TOKEN_NAME => "SeCreateTokenPrivilege",
+                SecurityEntity.SE_DEBUG_NAME => "SeDebugPrivilege",
+                SecurityEntity.SE_ENABLE_DELEGATION_NAME => "SeEnableDelegationPrivilege",
+                SecurityEntity.SE_IMPERSONATE_NAME => "SeImpersonatePrivilege",
+                SecurityEntity.SE_INC_BASE_PRIORITY_NAME => "SeIncreaseBasePriorityPrivilege",
+                SecurityEntity.SE_INCREASE_QUOTA_NAME => "SeIncreaseQuotaPrivilege",
+                SecurityEntity.SE_INC_WORKING_SET_NAME => "SeIncreaseWorkingSetPrivilege",
+                SecurityEntity.SE_LOAD_DRIVER_NAME => "SeLoadDriverPrivilege",
+                SecurityEntity.SE_LOCK_MEMORY_NAME => "SeLockMemoryPrivilege",
+                SecurityEntity.SE_MACHINE_ACCOUNT_NAME => "SeMachineAccountPrivilege",
+                SecurityEntity.SE_MANAGE_VOLUME_NAME => "SeManageVolumePrivilege",
+                SecurityEntity.SE_PROF_SINGLE_PROCESS_NAME => "SeProfileSingleProcessPrivilege",
+                SecurityEntity.SE_RELABEL_NAME => "SeRelabelPrivilege",
+                SecurityEntity.SE_REMOTE_SHUTDOWN_NAME => "SeRemoteShutdownPrivilege",
+                SecurityEntity.SE_RESTORE_NAME => "SeRestorePrivilege",
+                SecurityEntity.SE_SECURITY_NAME => "SeSecurityPrivilege",
+                SecurityEntity.SE_SHUTDOWN_NAME => "SeShutdownPrivilege",
+                SecurityEntity.SE_SYNC_AGENT_NAME => "SeSyncAgentPrivilege",
+                SecurityEntity.SE_SYSTEM_ENVIRONMENT_NAME => "SeSystemEnvironmentPrivilege",
+                SecurityEntity.SE_SYSTEM_PROFILE_NAME => "SeSystemProfilePrivilege",
+                SecurityEntity.SE_SYSTEMTIME_NAME => "SeSystemtimePrivilege",
+                SecurityEntity.SE_TAKE_OWNERSHIP_NAME => "SeTakeOwnershipPrivilege",
+                SecurityEntity.SE_TCB_NAME => "SeTcbPrivilege",
+                SecurityEntity.SE_TIME_ZONE_NAME => "SeTimeZonePrivilege",
+                SecurityEntity.SE_TRUSTED_CREDMAN_ACCESS_NAME => "SeTrustedCredManAccessPrivilege",
+                SecurityEntity.SE_UNDOCK_NAME => "SeUndockPrivilege",
+                _ => throw new ArgumentOutOfRangeException(typeof(SecurityEntity).Name),
+            };
         }
     }
 
