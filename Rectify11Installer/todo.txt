@@ -1,8 +1,0 @@
-[X] All icons
-[ ] Mobility center
-
-
-[X] Wallpaper
-[X] WinVer
-[ ] ThemeTool install
-[ ] ExplorerPatcher install
