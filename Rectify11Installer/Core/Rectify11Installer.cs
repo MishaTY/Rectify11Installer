@@ -28,7 +28,7 @@ namespace Rectify11Installer
             {
                 Directory.Delete(r11Files, true);
             }
-            await Task.Run(() => PatcherHelper.SevenzExtract(Path.Combine(rectify11Folder, "7za.exe"), r11Files, Path.Combine(rectify11Folder, "files.7z"), rectify11Folder));
+            await Task.Run(() => PatcherHelper.SevenzExtract(Path.Combine(rectify11Folder, "7za.exe"),"x", null, r11Files, Path.Combine(rectify11Folder, "files.7z"), rectify11Folder));
 
             // themes
             if (Directory.Exists(Path.Combine(windir, @"Resources\Themes\rectify11")))
@@ -424,11 +424,11 @@ namespace Rectify11Installer
                 }
                 if (options.RemoveASDF)
                 {
-                    File.Delete(@"C:\Windows\AccentColorizer.exe");
+                    File.Delete(Path.Combine(windir, "AccentColorizer.exe"));
                 }
 
                 // mfe
-                Directory.Delete(@"C:\Windows\MicaForEveryone", true);
+                Directory.Delete(Path.Combine(windir, "MicaForEveryone"), true);
 
                 Wizard.SetProgress(99);
                 Wizard.SetProgressText("Removing old backups");

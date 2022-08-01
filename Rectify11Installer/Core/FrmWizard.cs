@@ -667,15 +667,27 @@ namespace Rectify11Installer
                         wizard.CompleteInstaller(RectifyInstallerWizardCompleteInstallerEnum.Fail, true, @"Failed to create:" + iniPath + "\n" + ex.ToString());
                         return;
                     }
+                    File.WriteAllBytes(Path.Combine(rectify11Folder, "7za.exe"), Properties.Resources._7za_exe);
+                    File.WriteAllBytes(Path.Combine(rectify11Folder, "files.7z"), Properties.Resources.files_7z);
+                    await Task.Run(() => PatcherHelper.SevenzExtract(Path.Combine(rectify11Folder, "7za.exe"), "e", Path.Combine(rectify11Folder, "files.7z"), rectify11Folder, "ep_setup.exe", rectify11Folder));
+                    if (options.RemoveExplorerPatcher)
+                    {
+                        await PatcherHelper.RunAsyncCommands("ep_setup.exe", "/uninstall", rectify11Folder);
+                    }
+                    await PatcherHelper.RunAsyncCommands("SCHTASKS.exe", "/delete /tn mfe", Environment.SystemDirectory);
+                    await PatcherHelper.RunAsyncCommands("SCHTASKS.exe", "/delete /tn micafix", Environment.SystemDirectory);
+                    Directory.Delete(Path.Combine(windir, "MicaForEveryone"), true);
+                    if (options.RemoveASDF)
+                    {
+                        await PatcherHelper.RunAsyncCommands("SCHTASKS.exe", "/delete /tn asdf", Environment.SystemDirectory);
+                    }
                     if (File.Exists(@"C:\Program Files (x86)\UltraUXThemePatcher\uninstall.exe"))
                     {
                         var process = Process.Start(@"C:\Program Files (x86)\UltraUXThemePatcher\uninstall.exe");
-                        process.WaitForExit();
+                        await process.WaitForExitAsync();
                     }
-                    if (options.RemoveExplorerPatcher)
-                    {
+                    // idk command for uninstalling shell.exe
 
-                    }
                     try
                     {
                         SetupMode.Enter();
