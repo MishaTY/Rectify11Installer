@@ -48,7 +48,6 @@ namespace libmsstyle
         private Dictionary<StyleResource, string> m_resourceUpdates;
 
         private ushort m_resourceLanguage;
-        private ushort m_userLanguage;
 
         public VisualStyle()
         {
