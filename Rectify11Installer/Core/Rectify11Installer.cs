@@ -440,11 +440,9 @@ namespace Rectify11Installer
                 {
                     Directory.Delete(Path.Combine(windir, "MicaForEveryone"), true);
                 }
-
-
                 Wizard.SetProgress(99);
                 Wizard.SetProgressText("Removing old backups");
-                //Directory.Delete(@"C:\Windows\Rectify11", true);
+                Directory.Delete(Path.Combine(windir, @"Rectify11"), true);
 
                 InstallStatus.IsRectify11Installed = false;
                 Wizard.CompleteInstaller(RectifyInstallerWizardCompleteInstallerEnum.Success, isInstalling, "");
