@@ -6,6 +6,7 @@ using Microsoft.Win32;
 using Rectify11Installer.Controls;
 using Rectify11Installer.Core;
 using Rectify11Installer.Pages;
+using Rectify11Installer.Win32;
 using Rectify11Installer.Win32.Rectify11;
 using System.ComponentModel;
 using System.Diagnostics;

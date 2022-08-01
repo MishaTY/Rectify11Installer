@@ -1,4 +1,6 @@
-﻿namespace Rectify11Installer.Core
+﻿using Rectify11Installer.Win32;
+
+namespace Rectify11Installer.Core
 {
     public partial class FailUI : Form
     {

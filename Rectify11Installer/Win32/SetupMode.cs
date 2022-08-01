@@ -2,7 +2,7 @@
 using System.Diagnostics;
 using System.Runtime.InteropServices;
 
-namespace Rectify11Installer.Core
+namespace Rectify11Installer.Win32
 {
     public static class SetupMode
     {
@@ -76,10 +76,10 @@ namespace Rectify11Installer.Core
         [DllImport("Advapi32.dll", EntryPoint = "RegFlushKey")]
         public static extern int RegFlushKey(IntPtr hKey);
 
-        const UInt32 HKEY_CLASSES_ROOT = 0x80000000;
-        const UInt32 HKEY_CURRENT_USER = 0x80000001;
-        const UInt32 HKEY_LOCAL_MACHINE = 0x80000002;
-        const UInt32 HKEY_USERS = 0x80000003;
+        const uint HKEY_CLASSES_ROOT = 0x80000000;
+        const uint HKEY_CURRENT_USER = 0x80000001;
+        const uint HKEY_LOCAL_MACHINE = 0x80000002;
+        const uint HKEY_USERS = 0x80000003;
 
         public static void CommitRegistry()
         {
@@ -89,7 +89,7 @@ namespace Rectify11Installer.Core
 
         public static void RebootSystem()
         {
-            Win32.NativeMethods.Reboot();
+            NativeMethods.Reboot();
         }
     }
 }
