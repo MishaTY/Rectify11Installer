@@ -1,0 +1,4 @@
+﻿[*.cs]
+
+# IDE0058: Expression value is never used
+dotnet_diagnostic.IDE0058.severity = silent

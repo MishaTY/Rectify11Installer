@@ -51,6 +51,10 @@
 	</ItemGroup>
 
 	<ItemGroup>
+	  <None Include="..\.editorconfig" Link=".editorconfig" />
+	</ItemGroup>
+
+	<ItemGroup>
 		<PackageReference Include="AeroWizard" Version="2.3.1" />
 	</ItemGroup>
 

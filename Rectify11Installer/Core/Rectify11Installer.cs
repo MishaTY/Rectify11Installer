@@ -412,23 +412,33 @@ namespace Rectify11Installer
                 Wizard.SetProgressText("Removing optional features");
                 Wizard.SetProgress(98);
 
+
+
                 if (options.RestoreWallpapers)
                 {
-                    Directory.Delete(@"C:\Windows\Web\Wallpaper\Rectify11", true);
+                    if (Directory.Exists(Path.Combine(windir, @"Web\Wallpaper\Rectify11")))
+                    Directory.Delete(Path.Combine(windir, @"Web\Wallpaper\Rectify11"), true);
                 }
 
 
                 if (options.RemoveWinver)
                 {
-                    File.Copy(rectify11Folder + @"\backup\winver_backup.exe", @"C:\Windows\System32\winver.exe", true);
+                    File.Copy(rectify11Folder + @"\backup\winver_backup.exe", Path.Combine(windir, @"System32\winver.exe"), true);
                 }
                 if (options.RemoveASDF)
                 {
-                    File.Delete(Path.Combine(windir, "AccentColorizer.exe"));
+                    if (File.Exists(Path.Combine(windir, "AccentColorizer.exe")))
+                    {
+                        File.Delete(Path.Combine(windir, "AccentColorizer.exe"));
+                    }
                 }
 
                 // mfe
-                Directory.Delete(Path.Combine(windir, "MicaForEveryone"), true);
+                if (Directory.Exists(Path.Combine(windir, "MicaForEveryone")))
+                {
+                    Directory.Delete(Path.Combine(windir, "MicaForEveryone"), true);
+                }
+
 
                 Wizard.SetProgress(99);
                 Wizard.SetProgressText("Removing old backups");
