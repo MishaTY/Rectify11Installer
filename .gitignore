@@ -5,8 +5,6 @@
 # builds
 Rectify11Installer/bin/
 Rectify11Installer/obj/
-Rectify11InstallerWPF/bin/
-Rectify11InstallerWPF/obj/
 XmlGenUtil/bin/
 XmlGenUtil/obj/
 libmsstyle/bin/
