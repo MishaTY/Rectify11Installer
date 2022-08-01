@@ -1,5 +1,4 @@
-﻿using Rectify11Installer.Win32;
-using System.Runtime.InteropServices;
+﻿using System.Runtime.InteropServices;
 
 namespace Rectify11Installer.Core
 {
@@ -49,7 +48,7 @@ namespace Rectify11Installer.Core
                     return;
                 }
 
-                IniFile ini = new(iniPath);
+                IniFile ini = new IniFile(iniPath);
 
                 var mode = ini.Read("Mode");
 

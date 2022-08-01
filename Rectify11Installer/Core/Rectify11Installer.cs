@@ -287,8 +287,6 @@ namespace Rectify11Installer
                         File.Copy(rectify11Folder + @"\files\winpeshl.exe", rectify11Folder + @"\files\WinReMount\Windows\System32\winpeshl.exe", true);
                         File.Copy(sysdir + @"\themeui.dll", rectify11Folder + @"\files\WinReMount\Windows\System32\themeui.dll", true);
                         File.Copy(sysdir + @"\uxtheme.dll", rectify11Folder + @"\files\WinReMount\Windows\System32\uxtheme.dll", true);
-                        File.Copy(sysdir + @"\shellstyle.dll", rectify11Folder + @"\files\WinReMount\Windows\System32\shellstyle.dll", true);
-                        File.Copy(sysdir + @"\ExplorerFrame.dll", rectify11Folder + @"\files\WinReMount\Windows\System32\ExplorerFrame.dll", true);
                         File.Copy(rectify11Folder + @"\files\winpeshl.exe.mui", rectify11Folder + @"\files\WinReMount\Windows\System32\en-us\winpeshl.exe.mui", true);
                         File.Copy(sysdir + @"\en-us\bootux.dll.mui", rectify11Folder + @"\files\WinReMount\Windows\System32\en-us\bootux.dll.mui", true);
                         File.Copy(windir + @"\Resources\themes\rectify11\aero.msstyles", rectify11Folder + @"\files\WinreMount\Windows\Resources\themes\aero\aero.msstyles", true);
