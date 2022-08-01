@@ -214,7 +214,7 @@ namespace Rectify11Installer
                             continue;
                         }
 
-                        Directory.CreateDirectory(Path.Combine(rectify11Folder, "Tmp") + WinsxsDir);
+                        Directory.CreateDirectory(Path.Combine(rectify11Folder, "Tmp", WinsxsDir));
                         File.Copy(WinSxSFilePath, fileProper, true);
 
                         Directory.CreateDirectory(backupDirW);
