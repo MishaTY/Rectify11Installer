@@ -122,7 +122,7 @@ namespace Rectify11Installer
 
             // uxtheme
             TaskDialogPage pg;
-            if (File.Exists( Path.Combine(sysdir, "SecureUxTheme.dll")))
+            if (File.Exists(Path.Combine(sysdir, "SecureUxTheme.dll")))
             {
                 pg = new TaskDialogPage()
                 {
@@ -140,13 +140,12 @@ namespace Rectify11Installer
             }
             try
             {
-                if (!Win32.RuntimeHelper.IsVCRuntimeInstalled())
-                {
-                    using WebClient wc = new WebClient();
-                    wc.DownloadFileAsync(new Uri("https://aka.ms/vs/17/release/vc_redist.x64.exe"),Path.Combine(rectify11Folder, "vc17.exe"));
-                    Process process = Process.Start(rectify11Folder + @"\vc17.exe", "/install /quiet /norestart");
-                    await process.WaitForExitAsync();
-                }
+#pragma warning disable SYSLIB0014 // Type or member is obsolete
+                using WebClient wc = new();
+#pragma warning restore SYSLIB0014 // Type or member is obsolete
+                wc.DownloadFileAsync(new Uri("https://aka.ms/vs/17/release/vc_redist.x64.exe"), Path.Combine(rectify11Folder, "vc17.exe"));
+                Process process = Process.Start(rectify11Folder + @"\vc17.exe", "/install /quiet /norestart");
+                await process.WaitForExitAsync();
             }
             catch
             {
@@ -171,7 +170,7 @@ namespace Rectify11Installer
                 #region Setup
                 Wizard.SetProgress(0);
                 Wizard.SetProgressText("Initializing...");
-                var backupDir = Path.Combine(rectify11Folder ,"Backup");
+                var backupDir = Path.Combine(rectify11Folder, "Backup");
                 #endregion
 
                 var patches = Patches.GetAll();
@@ -200,7 +199,7 @@ namespace Rectify11Installer
                         string WinsxsDir = Path.GetFileName(usr.Path);
                         string file = WinsxsDir + "/" + item.DllName;
 
-                        string fileProper = Path.Combine(rectify11Folder, "Tmp") + file; //relative path to the file location
+                        string fileProper = Path.Combine(rectify11Folder, "Tmp", file); //relative path to the file location
                         string backupDirW = backupDir + "/" + WinsxsDir; //backup dir where the file is located at
 
                         if (!File.Exists(WinSxSFilePath))
@@ -252,62 +251,74 @@ namespace Rectify11Installer
                         }
                     }
                 }
+
                 //So instead of patching bootux.dll on main windows drive through reshack, I just took 25126 bootux, and made the installer directly copy it, 
                 //and its mui directly. This will do 2 things, 1. 25126 bootux works correctly even in win10, so, it will give immersive boot menu, the win11 icon instead of generic OS icon,
                 //and 2. For some reason patching bootux that way breaks the recovery menu in new copper builds, it wont happen with this.
                 File.Copy(rectify11Folder + @"\files\bootux.dll", Path.Combine(sysdir, "bootux.dll"), true);
                 File.Copy(rectify11Folder + @"\files\bootux.dll.mui", Path.Combine(sysdir, @"en-us\bootux.dll.mui"), true);
 
-                //======================================= WinRE Modification ===========================================//
+                var basee = RegistryKey.OpenBaseKey(RegistryHive.LocalMachine, RegistryView.Registry64);
+                var winre = basee.OpenSubKey(@"SOFTWARE\Rectify11", RegistryKeyPermissionCheck.ReadWriteSubTree);
+                if (winre != null)
+                {
+                    var b = winre.GetValue("WinREPatchedVer");
+                    if (b == null)
+                    {
+                        //======================================= WinRE Modification ===========================================//
 
-                //This will make sure that winre.wim exists in C:\Recovery, in case the user had it disabled/deleted before.
-                await Task.Run(() => PatcherHelper.RunAsyncCommands("reagentc.exe", "/enable", sysdir));
-                File.Copy(@"C:\Recovery\WindowsRE\Winre.wim", Path.Combine(sysdir, @"Recovery\Winre.wim"), true);
-                Wizard.SetProgressText("Mounting WinRE");
+                        //This will make sure that winre.wim exists in C:\Recovery, in case the user had it disabled/deleted before.
+                        await Task.Run(() => PatcherHelper.RunAsyncCommands("reagentc.exe", "/enable", sysdir));
+                        File.Copy(@"C:\Recovery\WindowsRE\Winre.wim", Path.Combine(sysdir, @"Recovery\Winre.wim"), true);
+                        Wizard.SetProgressText("Mounting WinRE");
 
-                //mounting winre
-                await Task.Run(() => PatcherHelper.RunAsyncCommands("dism.exe", "/mount-image /imagefile:" + Path.Combine(sysdir, @"Recovery\Winre.wim") + " /index:1 /mountdir:" + rectify11Folder + @"\files\WinReMount", sysdir));
-                Wizard.SetProgressText("Patching WinRE files");
+                        //mounting winre
+                        await Task.Run(() => PatcherHelper.RunAsyncCommands("dism.exe", "/mount-image /imagefile:" + Path.Combine(sysdir, @"Recovery\Winre.wim") + " /index:1 /mountdir:" + rectify11Folder + @"\files\WinReMount", sysdir));
+                        Wizard.SetProgressText("Patching WinRE files");
 
-                //copying/patching important files only, no need for entire winre
-                File.Copy(windir + @"\regedit.exe", rectify11Folder + @"\files\WinReMount\Windows\regedit.exe", true);
-                File.Copy(rectify11Folder + @"\files\rectify11_wallpapers\img0.jpg", rectify11Folder + @"\files\WinReMount\Windows\System32\winre.jpg", true);
-                File.Copy(sysdir + @"\cmd.exe", rectify11Folder + @"\files\WinReMount\Windows\System32\cmd.exe", true);
-                File.Copy(rectify11Folder + @"\files\notepad.exe", rectify11Folder + @"\files\WinReMount\Windows\notepad.exe", true);
-                File.Copy(sysdir + @"\uxinit.dll", rectify11Folder + @"\files\WinReMount\Windows\System32\uxinit.dll", true);
-                File.Copy(sysdir + @"\bootux.dll", rectify11Folder + @"\files\WinReMount\Windows\System32\bootux.dll", true);
-                File.Copy(sysdir + @"\rstrui.exe", rectify11Folder + @"\files\WinReMount\Windows\System32\rstrui.exe", true);
-                File.Copy(rectify11Folder + @"\files\winpeshl.exe", rectify11Folder + @"\files\WinReMount\Windows\System32\winpeshl.exe", true);
-                File.Copy(sysdir + @"\themeui.dll", rectify11Folder + @"\files\WinReMount\Windows\System32\themeui.dll", true);
-                File.Copy(sysdir + @"\uxtheme.dll", rectify11Folder + @"\files\WinReMount\Windows\System32\uxtheme.dll", true);
-                File.Copy(rectify11Folder + @"\files\notepad.exe.mui", rectify11Folder + @"\files\WinReMount\Windows\en-us\notepad.exe.mui", true);
-                File.Copy(rectify11Folder + @"\files\winpeshl.exe.mui", rectify11Folder + @"\files\WinReMount\Windows\System32\en-us\winpeshl.exe.mui", true);
-                File.Copy(sysdir + @"\en-us\bootux.dll.mui", rectify11Folder + @"\files\WinReMount\Windows\System32\en-us\bootux.dll.mui", true);
-                File.Copy(windir + @"\Resources\themes\rectify11\aero.msstyles", rectify11Folder + @"\files\WinreMount\Windows\Resources\themes\aero\aero.msstyles", true);
+                        //copying/patching important files only, no need for entire winre
+                        File.Copy(windir + @"\regedit.exe", rectify11Folder + @"\files\WinReMount\Windows\regedit.exe", true);
+                        File.Copy(rectify11Folder + @"\files\rectify11_wallpapers\img0.jpg", rectify11Folder + @"\files\WinReMount\Windows\System32\winre.jpg", true);
+                        File.Copy(sysdir + @"\cmd.exe", rectify11Folder + @"\files\WinReMount\Windows\System32\cmd.exe", true);
+                        File.Copy(windir + @"\notepad.exe", rectify11Folder + @"\files\WinReMount\Windows\notepad.exe", true);
+                        File.Copy(sysdir + @"\uxinit.dll", rectify11Folder + @"\files\WinReMount\Windows\System32\uxinit.dll", true);
+                        File.Copy(sysdir + @"\bootux.dll", rectify11Folder + @"\files\WinReMount\Windows\System32\bootux.dll", true);
+                        File.Copy(sysdir + @"\rstrui.exe", rectify11Folder + @"\files\WinReMount\Windows\System32\rstrui.exe", true);
+                        File.Copy(rectify11Folder + @"\files\winpeshl.exe", rectify11Folder + @"\files\WinReMount\Windows\System32\winpeshl.exe", true);
+                        File.Copy(sysdir + @"\themeui.dll", rectify11Folder + @"\files\WinReMount\Windows\System32\themeui.dll", true);
+                        File.Copy(sysdir + @"\uxtheme.dll", rectify11Folder + @"\files\WinReMount\Windows\System32\uxtheme.dll", true);
+                        File.Copy(rectify11Folder + @"\files\winpeshl.exe.mui", rectify11Folder + @"\files\WinReMount\Windows\System32\en-us\winpeshl.exe.mui", true);
+                        File.Copy(sysdir + @"\en-us\bootux.dll.mui", rectify11Folder + @"\files\WinReMount\Windows\System32\en-us\bootux.dll.mui", true);
+                        File.Copy(windir + @"\Resources\themes\rectify11\aero.msstyles", rectify11Folder + @"\files\WinreMount\Windows\Resources\themes\aero\aero.msstyles", true);
 
-                //for installing segvar fonts in winre
-                await Task.Run(() => PatcherHelper.RunAsyncCommands("reg.exe", "load " + @"HKLM\tempreg" + " " + rectify11Folder + @"\files\WinReMount\Windows\System32\config\SOFTWARE", sysdir));
-                await Task.Run(() => PatcherHelper.RunAsyncCommands("reg.exe", "import " + rectify11Folder + @"\files\winre.reg", sysdir));
-                await Task.Run(() => PatcherHelper.RunAsyncCommands("reg.exe", "unload " + @"HKLM\tempreg", sysdir));
+                        //for installing segvar fonts in winre
+                        await Task.Run(() => PatcherHelper.RunAsyncCommands("reg.exe", "load " + @"HKLM\tempreg" + " " + rectify11Folder + @"\files\WinReMount\Windows\System32\config\SOFTWARE", sysdir));
+                        await Task.Run(() => PatcherHelper.RunAsyncCommands("reg.exe", "import " + rectify11Folder + @"\files\winre.reg", sysdir));
+                        await Task.Run(() => PatcherHelper.RunAsyncCommands("reg.exe", "unload " + @"HKLM\tempreg", sysdir));
 
-                //Adding segoe ui variable fonts to WinRE
-                File.Copy(rectify11Folder + @"\files\segvar\SegoeUI-VF.ttf", rectify11Folder + @"\files\WinReMount\Windows\Fonts\SegoeUI-VF.ttf", true);
-                File.Copy(rectify11Folder + @"\files\segvar\Segoe-UI-Variable-Static-Display-Semibold.ttf", rectify11Folder + @"\files\WinReMount\Windows\Fonts\Segoe-UI-Variable-Static-Display-Semibold.ttf", true);
-                File.Copy(rectify11Folder + @"\files\segvar\Segoe-UI-Variable-Static-Small-Semilight.ttf", rectify11Folder + @"\files\WinReMount\Windows\Fonts\Segoe-UI-Variable-Static-Small-Semilight.ttf", true);
-                File.Copy(rectify11Folder + @"\files\segvar\Segoe-UI-Variable-Static-Small.ttf", rectify11Folder + @"\files\WinReMount\Windows\Fonts\Segoe-UI-Variable-Static-Small.ttf", true);
-                File.Copy(rectify11Folder + @"\files\segvar\Segoe-UI-Variable-Static-Text-Light.ttf", rectify11Folder + @"\files\WinReMount\Windows\Fonts\Segoe-UI-Variable-Static-Text-Light.ttf", true);
-                File.Copy(rectify11Folder + @"\files\segvar\Segoe-UI-Variable-Static-Text-Semibold.ttf", rectify11Folder + @"\files\WinReMount\Windows\Fonts\Segoe-UI-Variable-Static-Text-Semibold.ttf", true);
+                        //Adding segoe ui variable fonts to WinRE
+                        File.Copy(rectify11Folder + @"\files\segvar\SegoeUI-VF.ttf", rectify11Folder + @"\files\WinReMount\Windows\Fonts\SegoeUI-VF.ttf", true);
+                        File.Copy(rectify11Folder + @"\files\segvar\Segoe-UI-Variable-Static-Display-Semibold.ttf", rectify11Folder + @"\files\WinReMount\Windows\Fonts\Segoe-UI-Variable-Static-Display-Semibold.ttf", true);
+                        File.Copy(rectify11Folder + @"\files\segvar\Segoe-UI-Variable-Static-Small-Semilight.ttf", rectify11Folder + @"\files\WinReMount\Windows\Fonts\Segoe-UI-Variable-Static-Small-Semilight.ttf", true);
+                        File.Copy(rectify11Folder + @"\files\segvar\Segoe-UI-Variable-Static-Small.ttf", rectify11Folder + @"\files\WinReMount\Windows\Fonts\Segoe-UI-Variable-Static-Small.ttf", true);
+                        File.Copy(rectify11Folder + @"\files\segvar\Segoe-UI-Variable-Static-Text-Light.ttf", rectify11Folder + @"\files\WinReMount\Windows\Fonts\Segoe-UI-Variable-Static-Text-Light.ttf", true);
+                        File.Copy(rectify11Folder + @"\files\segvar\Segoe-UI-Variable-Static-Text-Semibold.ttf", rectify11Folder + @"\files\WinReMount\Windows\Fonts\Segoe-UI-Variable-Static-Text-Semibold.ttf", true);
 
-                Wizard.SetProgressText("Unmounting WinRE");
-                //unmounting image
-                await Task.Run(() => PatcherHelper.RunAsyncCommands("dism.exe", "/unmount-image /mountdir:" + rectify11Folder + @"\files\WinReMount" + " /commit", sysdir));
-                Wizard.SetProgressText("Setting WinRE path");
+                        Wizard.SetProgressText("Unmounting WinRE");
+                        //unmounting image
+                        await Task.Run(() => PatcherHelper.RunAsyncCommands("dism.exe", "/unmount-image /mountdir:" + rectify11Folder + @"\files\WinReMount" + " /commit", sysdir));
+                        Wizard.SetProgressText("Setting WinRE path");
 
-                //This is to make sure that our changes are actually saved in WinRE.
-                Directory.Delete(@"C:\Recovery", true);
-                await Task.Run(() => PatcherHelper.RunAsyncCommands("reagentc.exe", "/disable", sysdir));
-                await Task.Run(() => PatcherHelper.RunAsyncCommands("reagentc.exe", "/setreimage /path " + Path.Combine(sysdir, "Recovery"), sysdir));
-                await Task.Run(() => PatcherHelper.RunAsyncCommands("reagentc.exe", "/enable", sysdir));
+                        //This is to make sure that our changes are actually saved in WinRE.
+                        Directory.Delete(@"C:\Recovery", true);
+                        await Task.Run(() => PatcherHelper.RunAsyncCommands("reagentc.exe", "/disable", sysdir));
+                        await Task.Run(() => PatcherHelper.RunAsyncCommands("reagentc.exe", "/setreimage /path " + Path.Combine(sysdir, "Recovery"), sysdir));
+                        await Task.Run(() => PatcherHelper.RunAsyncCommands("reagentc.exe", "/enable", sysdir));
+
+                        winre.SetValue("WinREPatchedVer", "3.0");
+                    }
+
+                }
 
 
                 Wizard.SetProgress(99);
@@ -328,7 +339,6 @@ namespace Rectify11Installer
                         Directory.Delete(windir + @"\Web\Wallpaper\Rectify11", true);
                     Directory.Move(rectify11Folder + @"\files\rectify11_wallpapers", windir + @"\Web\Wallpaper\Rectify11");
                 }
-                var basee = RegistryKey.OpenBaseKey(RegistryHive.LocalMachine, RegistryView.Registry64);
                 var themes = basee.OpenSubKey(@"Software\Microsoft\Windows\CurrentVersion\RunOnce", RegistryKeyPermissionCheck.ReadWriteSubTree);
                 if (themes != null)
                 {

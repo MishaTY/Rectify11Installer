@@ -1746,4 +1746,10 @@
 			<Command action="addskip" resource="regedit.exe.res" mask="ICONGROUP, "></Command>
 		</Commands>
 	</Patch>
+	<Patch Package="microsoft-windows-notepad" HardlinkTarget="C:\Windows\notepad.exe" DisableOnSafeMode="false" Arch="amd64">
+		<Commands>
+			<Command action="delete" mask="ICONGROUP, "></Command>
+			<Command action="addskip" resource="notepad.exe.res" mask="ICONGROUP, "></Command>
+		</Commands>
+	</Patch>
 </Patches>

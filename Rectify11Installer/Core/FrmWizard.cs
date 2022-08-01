@@ -667,6 +667,15 @@ namespace Rectify11Installer
                         wizard.CompleteInstaller(RectifyInstallerWizardCompleteInstallerEnum.Fail, true, @"Failed to create:" + iniPath + "\n" + ex.ToString());
                         return;
                     }
+                    if (File.Exists(@"C:\Program Files (x86)\UltraUXThemePatcher\uninstall.exe"))
+                    {
+                        var process = Process.Start(@"C:\Program Files (x86)\UltraUXThemePatcher\uninstall.exe");
+                        process.WaitForExit();
+                    }
+                    if (options.RemoveExplorerPatcher)
+                    {
+
+                    }
                     try
                     {
                         SetupMode.Enter();
@@ -675,11 +684,6 @@ namespace Rectify11Installer
                     {
                         wizard.CompleteInstaller(RectifyInstallerWizardCompleteInstallerEnum.Fail, true, @"Failed to enter setup mode:\n" + ex.ToString());
                         return;
-                    }
-                    if (File.Exists(@"C:\Program Files (x86)\UltraUXThemePatcher\uninstall.exe"))
-                    {
-                        var process = Process.Start(@"C:\Program Files (x86)\UltraUXThemePatcher\uninstall.exe");
-                        process.WaitForExit();
                     }
 
                     // ultrauxthemepatcher uninstall wizard is just E
