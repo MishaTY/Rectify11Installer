@@ -75,7 +75,6 @@
             this.chkW11.TabIndex = 2;
             this.chkW11.Text = "Windows 11 Default";
             this.chkW11.UseVisualStyleBackColor = true;
-            this.chkW11.CheckedChanged += new System.EventHandler(this.chkW11_CheckedChanged);
             // 
             // chkW10
             // 
@@ -91,7 +90,6 @@
             this.chkW10.TabStop = true;
             this.chkW10.Text = "Windows 10 Modernized";
             this.chkW10.UseVisualStyleBackColor = true;
-            this.chkW10.CheckedChanged += new System.EventHandler(this.chkW10_CheckedChanged);
             // 
             // chkMicaExplorer
             // 
@@ -129,7 +127,6 @@
             this.pictureBox2.SizeMode = System.Windows.Forms.PictureBoxSizeMode.StretchImage;
             this.pictureBox2.TabIndex = 6;
             this.pictureBox2.TabStop = false;
-            this.pictureBox2.Click += new System.EventHandler(this.pictureBox2_Click);
             // 
             // pictureBox3
             // 
@@ -154,7 +151,6 @@
             this.label3.Text = "These settings can later be configured in ExplorerPatcher properties. You may exp" +
     "erience some bugs with extended Mica on 25xxx builds.";
             this.label3.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            this.label3.Click += new System.EventHandler(this.label3_Click);
             // 
             // EPPage
             // 
@@ -171,7 +167,6 @@
             this.Controls.Add(this.pictureBox1);
             this.Name = "EPPage";
             this.WizardTopText = "Customize your Desktop";
-            this.Load += new System.EventHandler(this.EPPage_Load);
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox2)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox3)).EndInit();

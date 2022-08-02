@@ -7,12 +7,6 @@ namespace Rectify11Installer.Pages
         public ProgressPage()
         {
             InitializeComponent();
-            Theme.OnThemeChanged += Theme_OnThemeChanged;
-            Theme_OnThemeChanged(null, new EventArgs());
-        }
-        private void Theme_OnThemeChanged(object? sender, EventArgs e)
-        {
-            
         }
 
         //private int CurrentTextIndex = 0;

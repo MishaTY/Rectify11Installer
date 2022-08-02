@@ -37,7 +37,7 @@ namespace Rectify11Installer
             {
                 CreateParams myCp = base.CreateParams;
                 if (HideCloseButton)
-                    myCp.ClassStyle = myCp.ClassStyle | CP_NOCLOSE_BUTTON;
+                    myCp.ClassStyle |= CP_NOCLOSE_BUTTON;
                 return myCp;
             }
         }
@@ -408,7 +408,7 @@ namespace Rectify11Installer
         #region Win32
 
         [DllImport("uxtheme.dll", SetLastError = true, ExactSpelling = true, CharSet = CharSet.Unicode)]
-        public static extern int SetWindowTheme(IntPtr hWnd, string pszSubAppName, string? pszSubIdList);
+        internal static extern int SetWindowTheme(IntPtr hWnd, string pszSubAppName, string? pszSubIdList);
         [DllImport("dwmapi.dll")]
         internal static extern int DwmSetWindowAttribute(IntPtr hwnd, WindowCompositionAttribute dwAttribute, ref int pvAttribute, int cbAttribute);
         [DllImport("user32.dll", SetLastError = true, CharSet = CharSet.Unicode)]
@@ -615,7 +615,7 @@ namespace Rectify11Installer
 
                     try
                     {
-                        IniFile f = new IniFile(iniPath);
+                        IniFile f = new(iniPath);
                         f.Write("InstallEP", options.ShouldInstallExplorerPatcher.ToString());
                         f.Write("InstallASDF", options.ShouldInstallASDF.ToString());
                         f.Write("InstallWP", options.ShouldInstallWallpaper.ToString());
@@ -790,7 +790,7 @@ namespace Rectify11Installer
                     IRectifyInstalllerUninstallOptions options = UninstallConfirmPage;
                     try
                     {
-                        IniFile f = new IniFile(iniPath);
+                        IniFile f = new(iniPath);
                         f.Write("RemoveEP", options.RemoveExplorerPatcher.ToString());
                         f.Write("RemoveThemes", options.RemoveThemesAndThemeTool.ToString());
                         f.Write("RemoveWP", options.RestoreWallpapers.ToString());
@@ -884,16 +884,6 @@ namespace Rectify11Installer
         private void FrmWizard_FormClosing(object sender, FormClosingEventArgs e)
         {
             TopMost = false;
-        }
-
-        private void FrmWizard_Load(object sender, EventArgs e)
-        {
-
-        }
-
-        private void pnlMain_Paint(object sender, PaintEventArgs e)
-        {
-
         }
     }
 }

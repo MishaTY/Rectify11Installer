@@ -124,7 +124,6 @@ namespace Rectify11Installer.Pages
             this.Size = new System.Drawing.Size(640, 475);
             this.WizardShowTitle = false;
             this.WizardTopText = "Welcome to Rectify11 Installer";
-            this.Load += new System.EventHandler(this.WelcomePage_Load);
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
