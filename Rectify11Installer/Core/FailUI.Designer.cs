@@ -31,8 +31,11 @@
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(FailUI));
             this.label1 = new System.Windows.Forms.Label();
             this.label2 = new System.Windows.Forms.Label();
+            this.darkAwareFlowLayoutPanel1 = new Rectify11Installer.Controls.DarkAwareFlowLayoutPanel();
             this.label3 = new System.Windows.Forms.Label();
             this.InfoLabel = new System.Windows.Forms.Label();
+            this.label4 = new System.Windows.Forms.Label();
+            this.darkAwareFlowLayoutPanel1.SuspendLayout();
             this.SuspendLayout();
             // 
             // label1
@@ -55,6 +58,20 @@
             this.label2.TabIndex = 1;
             this.label2.Text = "Installing Rectify11 failed";
             // 
+            // darkAwareFlowLayoutPanel1
+            // 
+            this.darkAwareFlowLayoutPanel1.AutoScroll = true;
+            this.darkAwareFlowLayoutPanel1.Controls.Add(this.label2);
+            this.darkAwareFlowLayoutPanel1.Controls.Add(this.label3);
+            this.darkAwareFlowLayoutPanel1.Controls.Add(this.InfoLabel);
+            this.darkAwareFlowLayoutPanel1.FlowDirection = System.Windows.Forms.FlowDirection.TopDown;
+            this.darkAwareFlowLayoutPanel1.Font = new System.Drawing.Font("Microsoft Sans Serif", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
+            this.darkAwareFlowLayoutPanel1.Location = new System.Drawing.Point(52, 67);
+            this.darkAwareFlowLayoutPanel1.Name = "darkAwareFlowLayoutPanel1";
+            this.darkAwareFlowLayoutPanel1.Size = new System.Drawing.Size(633, 333);
+            this.darkAwareFlowLayoutPanel1.TabIndex = 2;
+            this.darkAwareFlowLayoutPanel1.WrapContents = false;
+            // 
             // label3
             // 
             this.label3.AutoSize = true;
@@ -74,12 +91,24 @@
             this.InfoLabel.TabIndex = 3;
             this.InfoLabel.Text = resources.GetString("InfoLabel.Text");
             // 
+            // label4
+            // 
+            this.label4.AutoSize = true;
+            this.label4.Font = new System.Drawing.Font("Segoe UI Variable Small", 11.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
+            this.label4.Location = new System.Drawing.Point(521, 412);
+            this.label4.Name = "label4";
+            this.label4.Size = new System.Drawing.Size(164, 20);
+            this.label4.TabIndex = 3;
+            this.label4.Text = "Press ENTER to restart.";
+            // 
             // FailUI
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 15F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.Color.Black;
             this.ClientSize = new System.Drawing.Size(800, 450);
+            this.Controls.Add(this.label4);
+            this.Controls.Add(this.darkAwareFlowLayoutPanel1);
             this.Controls.Add(this.label1);
             this.ForeColor = System.Drawing.Color.White;
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.None;
@@ -89,8 +118,9 @@
             this.Text = "FailUI";
             this.TopMost = true;
             this.WindowState = System.Windows.Forms.FormWindowState.Maximized;
-            this.Load += new System.EventHandler(this.FailUI_Load);
-            this.KeyDown += new System.Windows.Forms.KeyEventHandler(this.FailUI_KeyDown);
+            this.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.FailUI_KeyPress);
+            this.darkAwareFlowLayoutPanel1.ResumeLayout(false);
+            this.darkAwareFlowLayoutPanel1.PerformLayout();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -103,6 +133,6 @@
         private Controls.DarkAwareFlowLayoutPanel darkAwareFlowLayoutPanel1;
         private Label label3;
         public Label InfoLabel;
-        private Controls.WinUIButton btnRestart;
+        private Label label4;
     }
 }
