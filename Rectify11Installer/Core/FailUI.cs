@@ -21,5 +21,10 @@
                 SetupMode.RebootSystem();
             }
         }
+
+        private void FailUI_Load(object sender, EventArgs e)
+        {
+
+        }
     }
 }

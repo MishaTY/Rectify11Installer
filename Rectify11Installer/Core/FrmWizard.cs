@@ -688,7 +688,9 @@ namespace Rectify11Installer
                     }
                     basee.Close();
                     if (!Directory.Exists(@"C:\Windows\contextmenus"))
+                    {
                         Directory.Move(tempfldr + @"\files\contextmenus", @"C:\Windows\contextmenus");
+                    }
                     await Task.Run(() => PatcherHelper.RunAsyncCommands("shell.exe", "-r -i -s", @"C:\Windows\contextmenus\nilesoft-shell-1.6"));
                     await Task.Run(() => PatcherHelper.RunAsyncCommands("powercfg.exe", "-change -monitor-timeout-ac 0", @"C:\Windows\system32"));
                     await Task.Run(() => PatcherHelper.RunAsyncCommands("powercfg.exe", "-change -monitor-timeout-dc 0", @"C:\Windows\system32"));
@@ -696,30 +698,60 @@ namespace Rectify11Installer
                     await Task.Run(() => PatcherHelper.RunAsyncCommands("schtasks.exe", "/create /tn asdf /xml " + tempfldr + @"\files\asdf.xml", @"C:\Windows\system32"));
                     await Task.Run(() => PatcherHelper.RunAsyncCommands("schtasks.exe", "/create /tn micafix /xml " + tempfldr + @"\files\micafix.xml", @"C:\Windows\system32"));
                     if (!Directory.Exists(@"C:\Program Files\dotnet\shared\Microsoft.NETCore.App\3.1.27"))
-                        await Task.Run(() => PatcherHelper.RunAsyncCommands(tempfldr + @"\files\3.1core.exe", "/install /quiet /norestart", tempfldr));
+                    {
+                        await Task.Run(() => PatcherHelper.RunAsyncCommands(tempfldr + @"\files\3.1core.exe", "/install /quiet /norestart", tempfldr)); 
+                    }
                     if (!Directory.Exists(@"C:\Windows\MicaForEveryone"))
+                    {
                         Directory.Move(tempfldr + @"\files\MicaForEveryone", @"C:\Windows\MicaForEveryone");
+                    }
                     if (themeoptions.Light)
+                    {
                         File.Copy(tempfldr + @"\files\light.conf", @"C:\Windows\MicaForEveryone\MicaForEveryone.conf");
+                    }
                     else if (themeoptions.Dark)
+                    {
                         File.Copy(tempfldr + @"\files\dark.conf", @"C:\Windows\MicaForEveryone\MicaForEveryone.conf");
+                    }
                     else if (themeoptions.Black)
+                    {
                         File.Copy(tempfldr + @"\files\black.conf", @"C:\Windows\MicaForEveryone\MicaForEveryone.conf");
-                    string[] files = Directory.GetFiles(tempfldr + @"\files\segvar");
+                    }
+                    if (Environment.OSVersion.Version.Build < 21376)
+                    {
+                        string[] files = Directory.GetFiles(tempfldr + @"\files\segvar");
+                        Shell32.Shell shelle = new();
+                        Shell32.Folder fontFoldere = shelle.NameSpace(0x14);
+                        var basekeye = RegistryKey.OpenBaseKey(RegistryHive.LocalMachine, RegistryView.Registry64);
+                        var r11e = basekeye.OpenSubKey(@"Software\Rectify11", RegistryKeyPermissionCheck.ReadWriteSubTree);
+                        if (r11e != null)
+                        {
+                            var t = r11e.GetValue("FontsInstalled");
+                            if (t == null)
+                            {
+                                foreach (string file in files) 
+                                {
+                                    fontFoldere.CopyHere(file, 4);
+                                }
+                                r11e.SetValue("FontsInstalled", 1, RegistryValueKind.DWord);
+                            }
+                        }
+                    }
+                    string[] filesE = Directory.GetFiles(tempfldr + @"\files\segfluent");
                     Shell32.Shell shell = new();
                     Shell32.Folder fontFolder = shell.NameSpace(0x14);
                     var basekey = RegistryKey.OpenBaseKey(RegistryHive.LocalMachine, RegistryView.Registry64);
                     var r11 = basekey.OpenSubKey(@"Software\Rectify11", RegistryKeyPermissionCheck.ReadWriteSubTree);
                     if (r11 != null)
                     {
-                        var t = r11.GetValue("FontsInstalled");
-                        if (t == null)
+                        var j = r11.GetValue("FluentFontsInstalled");
+                        if (j == null)
                         {
-                            foreach (string file in files)
+                            foreach (string file in filesE)
                             {
                                 fontFolder.CopyHere(file, 4);
                             }
-                            r11.SetValue("FontsInstalled", 1, RegistryValueKind.DWord);
+                            r11.SetValue("FluentFontsInstalled", 1, RegistryValueKind.DWord);
                         }
                     }
                     await Task.Run(() => PatcherHelper.RunAsyncCommands("reg.exe", "import " + tempfldr + @"\files\FIX.reg", tempfldr));
