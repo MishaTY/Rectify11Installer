@@ -419,7 +419,16 @@ namespace Rectify11Installer
                 Wizard.SetProgressText("Removing optional features");
                 Wizard.SetProgress(98);
 
+                //contextmenus
+                if (Directory.Exists(Path.Combine(windir, "contextmenus")))
+                {
+                    if (File.Exists(windir + @"\contextmenus\shell.exe"))
+                    {
+                        PatcherHelper.RunAsyncCommands("shell.exe", "-u -s", windir + @"\contextmenus");
+                        Directory.Delete(windir + @"\contextmenus", true);
+                    }
 
+                }
 
                 if (options.RestoreWallpapers)
                 {
@@ -439,7 +448,6 @@ namespace Rectify11Installer
                         File.Delete(Path.Combine(windir, "AccentColorizer.exe"));
                     }
                 }
-
                 // mfe
                 if (Directory.Exists(Path.Combine(windir, "MicaForEveryone")))
                 {

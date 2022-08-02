@@ -686,15 +686,6 @@ namespace Rectify11Installer
                         var process = Process.Start(@"C:\Program Files (x86)\UltraUXThemePatcher\uninstall.exe");
                         await process.WaitForExitAsync();
                     }
-                    if (Directory.Exists(Path.Combine(windir, "contextmenus")))
-                    {
-                        if (File.Exists(windir + @"\contextmenus\shell.exe"))
-                        {
-                            await PatcherHelper.RunAsyncCommands("shell.exe", "-u -s", windir + @"\contextmenus");
-                            Directory.Delete(windir + @"\contextmenus", true);
-                        }
-
-                    }
 
                     try
                     {
