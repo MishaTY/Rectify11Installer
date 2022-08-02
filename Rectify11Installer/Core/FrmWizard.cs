@@ -821,7 +821,7 @@ namespace Rectify11Installer
 
                     if (options.RemoveExplorerPatcher)
                     {
-                        if (File.Exists(@"C:\Windows\ep_setup.exe"))
+                        if (File.Exists(@"C:\Windows\Rectify11\ep_setup.exe"))
                         {
                             Process process = new();
                             process.StartInfo.FileName = @"C:\Windows\Rectify11\ep_setup.exe";
