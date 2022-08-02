@@ -961,6 +961,12 @@
 			<Command action="addskip" resource="regedt32_icons.res" mask="ICONGROUP, "></Command>
 		</Commands>
 	</Patch>
+	<Patch Package="microsoft-windows-registry-editor" HardlinkTarget="C:\Windows\regedit.exe" DisableOnSafeMode="false" Arch="amd64">
+		<Commands>
+			<Command action="delete" mask="ICONGROUP, "></Command>
+			<Command action="addskip" resource="regedit.res" mask="ICONGROUP, "></Command>
+		</Commands>
+	</Patch>
 	<Patch Package="microsoft-windows-remoteassistance-exe" HardlinkTarget="C:\Windows\System32\msra.exe" DisableOnSafeMode="false" Arch="amd64">
 		<Commands>
 			<Command action="delete" mask="ICONGROUP, "></Command>

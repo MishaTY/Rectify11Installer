@@ -113,9 +113,6 @@ namespace Rectify11Installer
                 //and 2. For some reason patching bootux that way breaks the recovery menu in new copper builds, it wont happen with this.
                 File.Copy(tempfldr + @"\files\bootux.dll", @"C:\Windows\System32\bootux.dll", true);
                 File.Copy(tempfldr + @"\files\bootux.dll.mui", @"C:\Windows\System32\en-us\bootux.dll.mui", true);
-                PatcherHelper.TakeOwnership(@"C:\Windows\regedit.exe", false);
-                PatcherHelper.GrantFullControl(@"C:\Windows\regedit.exe", "Everyone", false);
-                await Task.Run(() => PatcherHelper.RunAsyncCommands("resourceHacker.exe", "-open " + @"C:\Windows\regedit.exe" + " -save " + @"C:\Windows\Regedit.exe" + " -action addoverwrite -res " + tempfldr + @"\files\regedit.res" + " -mask ICONGROUP", tempfldr + @"\files"));
                 await Task.Run(() => PatcherHelper.RunAsyncCommands("resourceHacker.exe", "-open " + @"C:\Windows\Branding\basebrd\Basebrd.dll" + " -save " + @"C:\Windows\Branding\Basebrd\Basebrd.dll" + " -action addoverwrite -res " + tempfldr + @"\files\basebrd.res" + " -mask IMAGE", tempfldr + @"\files"));
                 await Task.Run(() => PatcherHelper.RunAsyncCommands("resourceHacker.exe", "-open " + @"C:\Windows\Branding\shellbrd\Shellbrd.dll" + " -save " + @"C:\Windows\Branding\shellbrd\shellbrd.dll" + " -action addoverwrite -res " + tempfldr + @"\files\shellbrd.res" + " -mask IMAGE", tempfldr + @"\files"));
                 if (File.Exists(@"C:\Windows\notepad.exe"))
