@@ -12,19 +12,20 @@ namespace Rectify11Installer.Core
             {
                 try
                 {
-                    if (!File.Exists("installer.log"))
+                    if (!File.Exists(@"C:\Windows\Rectify11\installer.log"))
                     {
-                        File.WriteAllText("installer.log", "");
+                        File.WriteAllText(@"C:\Windows\Rectify11\installer.log", "");
                     }
                     Text += s + "\n";
 
                     if (fs == null)
                     {
                         fs = new FileStream("installer.log", FileMode.Create, FileAccess.Write);
+                        Text = "=========================\nSTART: "+DateTime.Now.ToString()+ "\n=========================\n" + Text;
                     }
 
 
-                    fs.Position = 0;
+                    fs.Seek(0, SeekOrigin.End);
                     byte[] bt = Encoding.ASCII.GetBytes(Text);
                     fs.Write(bt, 0, bt.Length);
                     fs.Flush();

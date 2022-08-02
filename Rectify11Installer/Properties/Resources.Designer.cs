@@ -244,7 +244,6 @@ namespace Rectify11Installer.Properties {
         ///   Looks up a localized string similar to &lt;?xml version=&quot;1.0&quot; encoding=&quot;UTF-8&quot; ?&gt;
         ///
         ///&lt;!--Rectify11 Patch file list--&gt;
-        ///&lt;!--Please keep this file sorted by DLL name (A-Z)--&gt;
         ///
         ///&lt;Patches&gt;
         ///	&lt;Patch Package=&quot;microsoft-windows-accessibilitycpl&quot; HardlinkTarget=&quot;C:\Windows\SystemResources\accessibilitycpl.dll.mun&quot; DisableOnSafeMode=&quot;false&quot; Arch=&quot;amd64&quot;&gt;
@@ -252,11 +251,12 @@ namespace Rectify11Installer.Properties {
         ///			&lt;Command action=&quot;delete&quot; mask=&quot;ICONGROUP,&quot;&gt;&lt;/Command&gt;
         ///			&lt;Command action=&quot;addskip&quot; resource=&quot;accessibilitycpl_Icons.res&quot; mask=&quot;ICONGROUP,&quot;&gt;&lt;/Command&gt;
         ///
-        ///			&lt;Command action=&quot;delete&quot; mask= [rest of string was truncated]&quot;;.
+        ///			&lt;Command action=&quot;delete&quot; mask=&quot;UIFILE,&quot;&gt;&lt;/Command&gt;
+        ///			&lt;Command action=&quot;addskip&quot; reso [rest of string was truncated]&quot;;.
         /// </summary>
         internal static string rectify11_xml {
             get {
-                return ResourceManager.GetString("rectify11.xml", resourceCulture);
+                return ResourceManager.GetString("rectify11_xml", resourceCulture);
             }
         }
         
