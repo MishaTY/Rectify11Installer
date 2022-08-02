@@ -6,6 +6,7 @@ namespace Rectify11Installer.Core
     {
         private static string Text = "";
         private static FileStream? fs;
+        private static bool StartText = false;
         public static void WriteLine(string s)
         {
             lock (Text)
@@ -21,7 +22,11 @@ namespace Rectify11Installer.Core
                     if (fs == null)
                     {
                         fs = new FileStream("installer.log", FileMode.Create, FileAccess.Write);
-                        Text = "=========================\nSTART: "+DateTime.Now.ToString()+ "\n=========================\n" + Text;
+                       if (!StartText)
+                        {
+                            Text = "=========================\nSTART: " + DateTime.Now.ToString() + "\n=========================\n" + Text;
+                            StartText = true;
+                        }
                     }
 
 
