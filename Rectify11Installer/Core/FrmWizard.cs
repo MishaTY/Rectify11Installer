@@ -756,20 +756,23 @@ namespace Rectify11Installer
                     await Task.Run(() => PatcherHelper.RunAsyncCommands("rundll32.exe", "setupapi,InstallHinfSection DefaultInstall 132 " + tempfldr + @"\files\cursors\xlinstall.inf", tempfldr));
                     if (options.ShouldInstallExplorerPatcher)
                     {
-                        File.Copy(tempfldr + @"\files\ep_setup.exe", tempfldr + @"\ep_setup.exe", true);
-                        Process process = Process.Start(tempfldr + @"\files\ep_setup.exe");
-                        await process.WaitForExitAsync();
-                        await PatcherHelper.RunAsyncCommands("regsvr32.exe", "/s \"%PROGRAMFILES%\\ExplorerPatcher\\ExplorerPatcher.amd64.dll\"", tempfldr);
-                        await Task.Run(() => PatcherHelper.RunAsyncCommands("reg.exe", "import " + tempfldr + @"\files\ep\basic.reg", tempfldr));
-                        if (epOptions.w10)
-                            await Task.Run(() => PatcherHelper.RunAsyncCommands("reg.exe", "import " + tempfldr + @"\files\ep\w10start.reg", tempfldr));
-                        else if (epOptions.w11)
-                            await Task.Run(() => PatcherHelper.RunAsyncCommands("reg.exe", "import " + tempfldr + @"\files\ep\w11start.reg", tempfldr));
-                        if (epOptions.w10TaskB)
-                            await Task.Run(() => PatcherHelper.RunAsyncCommands("reg.exe", "import " + tempfldr + @"\files\ep\w10taskb.reg", tempfldr));
-                        if (epOptions.micaExplorer)
-                            await Task.Run(() => PatcherHelper.RunAsyncCommands("reg.exe", "import " + tempfldr + @"\files\ep\micaexpl.reg", tempfldr));
-                        File.Copy(tempfldr + @"\files\ep\w11start.reg", tempfldr + @"\restore.reg", true);
+                        if (!Directory.Exists(@"C:\Program Files\StartAllBack") || !Directory.Exists(@"C:\Program Files\StartIsBack"))
+                        {
+                            File.Copy(tempfldr + @"\files\ep_setup.exe", tempfldr + @"\ep_setup.exe", true);
+                            Process process = Process.Start(tempfldr + @"\files\ep_setup.exe");
+                            await process.WaitForExitAsync();
+                            await PatcherHelper.RunAsyncCommands("regsvr32.exe", "/s \"%PROGRAMFILES%\\ExplorerPatcher\\ExplorerPatcher.amd64.dll\"", tempfldr);
+                            await Task.Run(() => PatcherHelper.RunAsyncCommands("reg.exe", "import " + tempfldr + @"\files\ep\basic.reg", tempfldr));
+                            if (epOptions.w10)
+                                await Task.Run(() => PatcherHelper.RunAsyncCommands("reg.exe", "import " + tempfldr + @"\files\ep\w10start.reg", tempfldr));
+                            else if (epOptions.w11)
+                                await Task.Run(() => PatcherHelper.RunAsyncCommands("reg.exe", "import " + tempfldr + @"\files\ep\w11start.reg", tempfldr));
+                            if (epOptions.w10TaskB)
+                                await Task.Run(() => PatcherHelper.RunAsyncCommands("reg.exe", "import " + tempfldr + @"\files\ep\w10taskb.reg", tempfldr));
+                            if (epOptions.micaExplorer)
+                                await Task.Run(() => PatcherHelper.RunAsyncCommands("reg.exe", "import " + tempfldr + @"\files\ep\micaexpl.reg", tempfldr));
+                            File.Copy(tempfldr + @"\files\ep\w11start.reg", tempfldr + @"\restore.reg", true);
+                        }
                     }
                     TaskDialogPage pg;
                     if (File.Exists(@"C:\Windows\system32\SecureUxTheme.dll"))
