@@ -12,10 +12,5 @@
         public bool RemoveThemesAndThemeTool => chkRemoveThemes.Checked;
 
         public bool RestoreWallpapers => chkRestoreWallpaper.Checked;
-
-        private void chkRemoveThemes_CheckedChanged(object sender, EventArgs e)
-        {
-
-        }
     }
 }

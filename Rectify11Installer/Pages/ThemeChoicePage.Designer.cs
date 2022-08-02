@@ -137,7 +137,6 @@
             this.darkAwareRadioButton1.TabStop = true;
             this.darkAwareRadioButton1.Text = "Light";
             this.darkAwareRadioButton1.UseVisualStyleBackColor = true;
-            this.darkAwareRadioButton1.CheckedChanged += new System.EventHandler(this.darkAwareRadioButton1_CheckedChanged);
             // 
             // pictureBox4
             // 
