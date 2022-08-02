@@ -141,6 +141,7 @@ namespace Rectify11Installer.Core
             this.Invoke((MethodInvoker)delegate ()
             {
                 SetupMode.Exit();
+                Logger.CloseLog();
                 if (type == RectifyInstallerWizardCompleteInstallerEnum.Fail)
                 {
                     TopMost = false;

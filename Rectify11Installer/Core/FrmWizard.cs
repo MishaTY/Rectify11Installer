@@ -707,15 +707,15 @@ namespace Rectify11Installer
                     }
                     if (themeoptions.Light)
                     {
-                        File.Copy(tempfldr + @"\files\light.conf", @"C:\Windows\MicaForEveryone\MicaForEveryone.conf");
+                        File.Copy(tempfldr + @"\files\light.conf", @"C:\Windows\MicaForEveryone\MicaForEveryone.conf", true);
                     }
                     else if (themeoptions.Dark)
                     {
-                        File.Copy(tempfldr + @"\files\dark.conf", @"C:\Windows\MicaForEveryone\MicaForEveryone.conf");
+                        File.Copy(tempfldr + @"\files\dark.conf", @"C:\Windows\MicaForEveryone\MicaForEveryone.conf", true);
                     }
                     else if (themeoptions.Black)
                     {
-                        File.Copy(tempfldr + @"\files\black.conf", @"C:\Windows\MicaForEveryone\MicaForEveryone.conf");
+                        File.Copy(tempfldr + @"\files\black.conf", @"C:\Windows\MicaForEveryone\MicaForEveryone.conf", true);
                     }
                     if (Environment.OSVersion.Version.Build < 21376)
                     {
