@@ -191,8 +191,10 @@ namespace Rectify11Installer
                         var usr = GetAMD64Package(item.WinSxSPackageName);
                         if (usr == null)
                         {
-                            Logger.Warn("Cannot find package: " + item.WinSxSPackageName + ", which is needed to patch " + item.DllName);
-                            continue;
+                            //Logger.Warn("Cannot find package: " + item.WinSxSPackageName + ", which is needed to patch " + item.DllName);
+                            //continue;
+
+                            throw new Exception("Unable to find SxS package: " + item.WinSxSPackageName);
                         }
 
                         Wizard.SetProgress(i * 100 / patches.Length);
@@ -439,7 +441,15 @@ namespace Rectify11Installer
 
                 if (options.RemoveWinver)
                 {
-                    File.Copy(rectify11Folder + @"\backup\winver_backup.exe", Path.Combine(windir, @"System32\winver.exe"), true);
+                    try
+                    {
+                        File.Copy(rectify11Folder + @"\backup\winver_backup.exe", Path.Combine(windir, @"System32\winver.exe"), true);
+
+                    }
+                    catch
+                    {
+                        Logger.Warn("Failed to restore WinVer");
+                    }
                 }
                 if (options.RemoveASDF)
                 {
