@@ -686,7 +686,15 @@ namespace Rectify11Installer
                         var process = Process.Start(@"C:\Program Files (x86)\UltraUXThemePatcher\uninstall.exe");
                         await process.WaitForExitAsync();
                     }
-                    // idk command for uninstalling shell.exe
+                    if (Directory.Exists(Path.Combine(windir, "contextmenus")))
+                    {
+                        if (File.Exists(windir + @"\contextmenus\shell.exe"))
+                        {
+                            await PatcherHelper.RunAsyncCommands("shell.exe", "-u -s", windir + @"\contextmenus");
+                            Directory.Delete(windir + @"\contextmenus", true);
+                        }
+
+                    }
 
                     try
                     {
@@ -746,26 +754,28 @@ namespace Rectify11Installer
         }
         private void InstallFonts()
         {
-            // fonts
-            string[] files = Directory.GetFiles(rectify11Folder + @"\files\segvar");
+            //fonts
+            string[] filesE = Directory.GetFiles(rectify11Folder + @"\files\segvar");
             Shell32.Shell shell = new();
             Shell32.Folder fontFolder = shell.NameSpace(0x14);
-            var basekey = RegistryKey.OpenBaseKey(RegistryHive.LocalMachine, RegistryView.Registry64);
-            var r11 = basekey.OpenSubKey(@"Software\Rectify11", RegistryKeyPermissionCheck.ReadWriteSubTree);
-            if (r11 != null)
+            if (Environment.OSVersion.Version.Build < 21376)
             {
-                var t = r11.GetValue("FontsInstalled");
-                if (t == null)
+                foreach (string file in filesE)
                 {
-                    foreach (string file in files)
-                    {
-                        fontFolder.CopyHere(file, 4);
-                    }
-                    r11.SetValue("FontsInstalled", 1, RegistryValueKind.DWord);
+                    fontFolder.CopyHere(file, 4);
                 }
             }
-        }
 
+            //mdl will be overwritten regardless of the build
+            string[] filesJ = Directory.GetFiles(rectify11Folder + @"\files\segfluent");
+            Shell32.Shell shellJ = new();
+            Shell32.Folder fontFolderJ = shell.NameSpace(0x14);
+            foreach (string file in filesJ)
+            {
+                fontFolder.CopyHere(file, 4);
+            }
+
+        }
         private void pnlMain_Paint(object sender, PaintEventArgs e)
         {
 

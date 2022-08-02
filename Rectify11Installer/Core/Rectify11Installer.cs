@@ -29,18 +29,6 @@ namespace Rectify11Installer
                 Directory.Delete(r11Files, true);
             }
             await Task.Run(() => PatcherHelper.SevenzExtract(Path.Combine(rectify11Folder, "7za.exe"),"x", null, r11Files, Path.Combine(rectify11Folder, "files.7z"), rectify11Folder));
-
-            //installing fonts, only if they dont exist
-            if (!File.Exists(Path.Combine(windir, @"fonts\segUIVar.ttf")))
-            {
-                await Task.Run(() => PatcherHelper.RunAsyncCommands("reg.exe", "import " + rectify11Folder + @"\files\segvar.reg", rectify11Folder));
-                DirectoryInfo j = new(Path.Combine(r11Files, "segvar"));
-                FileInfo[] Files2 = j.GetFiles("*.ttf");
-                foreach (FileInfo file in Files2)
-                {
-                    File.Copy(file.FullName, Path.Combine(windir, "fonts", file.Name), true);
-                }
-            }
             // themes
             if (Directory.Exists(Path.Combine(windir, @"Resources\Themes\rectify11")))
             {
@@ -135,7 +123,6 @@ namespace Rectify11Installer
                 if (epOptions.micaExplorer)
                     await Task.Run(() => PatcherHelper.RunAsyncCommands("reg.exe", "import " + rectify11Folder + @"\files\ep\micaexpl.reg", rectify11Folder));
             }
-
             // uxtheme
             TaskDialogPage pg;
             if (File.Exists(Path.Combine(sysdir, "SecureUxTheme.dll")))
