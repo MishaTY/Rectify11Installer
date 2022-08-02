@@ -26,6 +26,10 @@
 	</PropertyGroup>
 
 	<ItemGroup>
+	  <None Remove="Resources\rectify11.xml" />
+	</ItemGroup>
+
+	<ItemGroup>
 		<COMReference Include="WUApiLib">
 			<VersionMinor>0</VersionMinor>
 			<VersionMajor>2</VersionMajor>
@@ -48,6 +52,7 @@
 
 	<ItemGroup>
 		<Content Include="r11.ico" />
+		<Resource Include="Resources\rectify11.xml" />
 	</ItemGroup>
 
 	<ItemGroup>

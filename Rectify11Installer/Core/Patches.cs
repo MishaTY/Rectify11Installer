@@ -6,8 +6,8 @@ namespace Rectify11Installer.Core
     {
         public static PatchDef[] GetAll()
         {
-            List<PatchDef> p = new List<PatchDef>();
-            XmlDocument doc = new XmlDocument();
+            List<PatchDef> p = new();
+            XmlDocument doc = new();
             doc.LoadXml(File.ReadAllText(@"C:\Windows\Rectify11" + "\\rectify11.xml"));
 
             var patchesTag = doc.GetElementsByTagName("Patches");

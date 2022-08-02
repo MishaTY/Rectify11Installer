@@ -1,7 +1,6 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 
 <!--Rectify11 Patch file list-->
-<!--Please keep this file sorted by DLL name (A-Z)-->
 
 <Patches>
 	<Patch Package="microsoft-windows-accessibilitycpl" HardlinkTarget="C:\Windows\SystemResources\accessibilitycpl.dll.mun" DisableOnSafeMode="false" Arch="amd64">
