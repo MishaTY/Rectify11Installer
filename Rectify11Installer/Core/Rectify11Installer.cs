@@ -295,7 +295,7 @@ namespace Rectify11Installer
                 {
                     if (Directory.Exists(@"C:\Windows\Resources\themes\rectify11"))
                     {
-                        Directory.Delete(@"C:\Windows\Resources\themes\rectify11");
+                        Directory.Delete(@"C:\Windows\Resources\themes\rectify11", true);
                     }
                     if (File.Exists(@"C:\Windows\Resources\theme\lightrectified.theme") && File.Exists(@"C:\Windows\Resources\theme\darkrectified.theme") && File.Exists(@"C:\Windows\Resources\theme\darkcolorized.theme") && File.Exists(@"C:\Windows\Resources\theme\black.theme") && File.Exists(@"C:\Windows\Resources\theme\blacknonhighcontrastribbon.theme"))
                     {

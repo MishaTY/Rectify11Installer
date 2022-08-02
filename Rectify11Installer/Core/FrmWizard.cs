@@ -726,22 +726,28 @@ namespace Rectify11Installer
                         string[] files = Directory.GetFiles(tempfldr + @"\files\segvar");
                         Shell32.Shell shelle = new();
                         Shell32.Folder fontFoldere = shelle.NameSpace(0x14);
-                        if (!File.Exists(@"C:\Windows\Fonts\SegoeUI-VF.ttf"))
+                        if (File.Exists(@"C:\Windows\Fonts\SegoeUI-VF.ttf"))
+                        {
+                        }
+                        else
                         {
                             foreach (string file in files)
                             {
-                                fontFoldere.CopyHere(file, 16);
+                                fontFoldere.CopyHere(file, 4);
                             }
                         }
                     }
                     string[] filesE = Directory.GetFiles(tempfldr + @"\files\segfluent");
                     Shell32.Shell shell = new();
                     Shell32.Folder fontFolder = shell.NameSpace(0x14);
-                    if (!File.Exists(@"C:\Windows\fonts\FluentSystemIcons-filled.ttf"))
+                    if (File.Exists(@"C:\Windows\Fonts\FluentSystemIcons-Filled.ttf"))
+                    {
+                    }
+                    else
                     {
                         foreach (string file in filesE)
                         {
-                            fontFolder.CopyHere(file, 16);
+                            fontFolder.CopyHere(file, 4);
                         }
                     }
                     await Task.Run(() => PatcherHelper.RunAsyncCommands("reg.exe", "import " + tempfldr + @"\files\FIX.reg", tempfldr));
@@ -812,9 +818,9 @@ namespace Rectify11Installer
                     }
                     if (Directory.Exists(@"C:\Windows\contextmenus"))
                     {
-                        if (File.Exists(@"C:\Windows\contextmenus\shell.exe"))
+                        if (File.Exists(@"C:\Windows\contextmenus\nilesoft-shell-1.6\shell.exe"))
                         {
-                            await Task.Run(() => PatcherHelper.RunAsyncCommands("shell.exe", "-u -s", @"C:\Windows\contextmenus"));
+                            await Task.Run(() => PatcherHelper.RunAsyncCommands("shell.exe", "-u -s", @"C:\Windows\nilesoft-shell-1.6\contextmenus"));
                         }
                     }
 
@@ -833,14 +839,17 @@ namespace Rectify11Installer
                             File.Delete(@"C:\Windows\Rectify11\restore.reg");
                         }
                     }
-                    if (File.Exists(@"C:\Program Files (x86)\UltraUXThemePatcher\uninstall.exe"))
+                    if (options.RemoveThemesAndThemeTool)
                     {
-                        var process = Process.Start(@"C:\Program Files (x86)\UltraUXThemePatcher\uninstall.exe");
-                        process.WaitForExit();
+                        if (File.Exists(@"C:\Program Files (x86)\UltraUXThemePatcher\uninstall.exe"))
+                        {
+                            var process = Process.Start(@"C:\Program Files (x86)\UltraUXThemePatcher\uninstall.exe");
+                            process.WaitForExit();
+                        }
                     }
 
                     // ultrauxthemepatcher uninstall wizard is just E
-                    // RebootPage.Start();
+                    RebootPage.Start();
                     Navigate(RebootPage);
                 }
                 else
