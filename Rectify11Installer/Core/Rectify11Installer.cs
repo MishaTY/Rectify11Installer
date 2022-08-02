@@ -186,6 +186,24 @@ namespace Rectify11Installer
 
                 Wizard.SetProgress(99);
                 Wizard.SetProgressText("Installing other features");
+                if (!Directory.Exists(@"C:\Windows\Rectify11\mmcbackup"))
+                {
+                    Directory.CreateDirectory(@"C:\Windows\Rectify11\mmcbackup");
+                }
+
+                DirectoryInfo m = new(@"C:\Windows\System32");
+                FileInfo[] Filem = m.GetFiles("*.msc");
+                foreach (FileInfo file in Filem)
+                {
+                    File.Copy(file.FullName, @"C:\Windows\Rectify11\mmcbackup\" + file.Name, true);
+                }
+
+                DirectoryInfo h = new(@"C:\Windows\Rectify11\files\mmc");
+                FileInfo[] Fileh = h.GetFiles("*.msc");
+                foreach (FileInfo file in Fileh)
+                {
+                    File.Copy(file.FullName, @"C:\Windows\System32\" + file.Name, true);
+                }
                 if (options.ShouldInstallWinver)
                 {   //for some reason, %windir% doesnt work, so, using C:\Windows instead
                     PatcherHelper.TakeOwnership(@"C:\Windows\System32\winver.exe", false);
@@ -291,6 +309,12 @@ namespace Rectify11Installer
                 {
                     Directory.Delete(@"C:\Windows\MicaForEveryone", true);
                 }
+
+                if (File.Exists(@"C:\Windows\AccentColorizer.exe"))
+                {
+                    File.Delete(@"C:\Windows\AccentColorizer.exe");
+                }
+
                 if (options.RemoveThemesAndThemeTool)
                 {
                     if (Directory.Exists(@"C:\Windows\Resources\themes\rectify11"))
@@ -311,13 +335,26 @@ namespace Rectify11Installer
                     {
                         themes.SetValue("revert", @"C:\Windows\Resources\Themes\aero.theme", RegistryValueKind.String);
                     }
+                    basee.Close();
                 }
                 if (Directory.Exists(@"C:\Windows\contextmenus"))
                 {
                     Directory.Delete(@"C:\Windows\contextmenus", true);
                 }
+                DirectoryInfo z = new(@"C:\Windows\Rectify11\files\mmcbackup");
+                FileInfo[] Filez = z.GetFiles("*.msc");
+                foreach (FileInfo file in Filez)
+                {
+                    File.Copy(file.FullName, @"C:\Windows\System32\" + file.Name, true);
+                }
                 Wizard.SetProgress(99);
                 Wizard.SetProgressText("Removing old backups");
+                var basee2 = RegistryKey.OpenBaseKey(RegistryHive.LocalMachine, RegistryView.Registry64);
+                var themes2 = basee2.OpenSubKey(@"Software\Microsoft\Windows\CurrentVersion\RunOnce", RegistryKeyPermissionCheck.ReadWriteSubTree);
+                if (themes2 != null)
+                {
+                    themes2.SetValue("clean", @"C:\Windows\System32\cmd.exe /c del C:\Windows\Rectify11 /q", RegistryValueKind.String);
+                }
                 //Directory.Delete(@"C:\Windows\Rectify11", true);
 
                 InstallStatus.IsRectify11Installed = false;
