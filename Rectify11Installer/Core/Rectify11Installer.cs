@@ -275,19 +275,33 @@ namespace Rectify11Installer
 
                 if (options.RestoreWallpapers)
                 {
-                    Directory.Delete(@"C:\Windows\Web\Wallpaper\Rectify11", true);
+                    if (Directory.Exists(@"C:\Windows\Web\Wallpaper\Rectify11"))
+                    {
+                        Directory.Delete(@"C:\Windows\Web\Wallpaper\Rectify11", true);
+                    }
                 }
-
-
-
-                //if (options.RestoreWinver)
-                //{
-                //    var pkg = GetAMD64Package("microsoft-windows-winver");
-                //    if (pkg != null)
-                //    {
-                //        //ReplaceFileInPackage(pkg, @"C:\Windows\System32\winver.exe", "C:/Windows/Rectify11/winver.exe");
-                //    }
-                //}
+                File.Copy(@"C:\Windows\Rectify11\files\winver.bak.exe", @"C:\Windows\System32\winver.exe", true);
+                if (options.RemoveThemesAndThemeTool)
+                {
+                    if (Directory.Exists(@"C:\Windows\Resources\themes\rectify11"))
+                    {
+                        Directory.Delete(@"C:\Windows\Resources\themes\rectify11");
+                    }
+                    if (File.Exists(@"C:\Windows\Resources\theme\lightrectified.theme") || File.Exists(@"C:\Windows\Resources\theme\darkrectified.theme") || File.Exists(@"C:\Windows\Resources\theme\darkcolorized.theme") || File.Exists(@"C:\Windows\Resources\theme\black.theme") || File.Exists(@"C:\Windows\Resources\theme\blacknonhighcontrastribbon.theme"))
+                    {
+                        File.Delete(@"C:\Windows\Resources\theme\lightrectified.theme");
+                        File.Delete(@"C:\Windows\Resources\theme\darkrectified.theme");
+                        File.Delete(@"C:\Windows\Resources\theme\darkcolorized.theme");
+                        File.Delete(@"C:\Windows\Resources\theme\black.theme");
+                        File.Delete(@"C:\Windows\Resources\theme\blacknonhighcontrastribbon.theme");
+                    }
+                    var basee = RegistryKey.OpenBaseKey(RegistryHive.LocalMachine, RegistryView.Registry64);
+                    var themes = basee.OpenSubKey(@"Software\Microsoft\Windows\CurrentVersion\RunOnce", RegistryKeyPermissionCheck.ReadWriteSubTree);
+                    if (themes != null)
+                    {
+                        themes.SetValue("revert", @"C:\Windows\Resources\Themes\aero.theme", RegistryValueKind.String);
+                    }
+                }
 
                 Wizard.SetProgress(99);
                 Wizard.SetProgressText("Removing old backups");
