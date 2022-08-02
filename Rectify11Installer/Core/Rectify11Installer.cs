@@ -281,6 +281,10 @@ namespace Rectify11Installer
                     }
                 }
                 File.Copy(@"C:\Windows\Rectify11\files\winver.bak.exe", @"C:\Windows\System32\winver.exe", true);
+                if (Directory.Exists(@"C:\Windows\MicaForEveryone"))
+                {
+                    Directory.Delete(@"C:\Windows\MicaForEveryone", true);
+                }
                 if (options.RemoveThemesAndThemeTool)
                 {
                     if (Directory.Exists(@"C:\Windows\Resources\themes\rectify11"))
