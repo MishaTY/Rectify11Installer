@@ -27,7 +27,8 @@ namespace Rectify11Installer
                 Wizard.SetProgress(0);
                 Wizard.SetProgressText("Initializing...");
                 var backupDir = @"C:\Windows\Rectify11\Backup";
-                File.Copy(Application.ExecutablePath, @"C:\Windows\Rectify11\rectify11setup.exe", true);
+                //why
+               //File.Copy(Application.ExecutablePath, @"C:\Windows\Rectify11\rectify11setup.exe", true);
                 #endregion
 
                 var patches = Patches.GetAll();
