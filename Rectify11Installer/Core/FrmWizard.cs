@@ -672,14 +672,28 @@ namespace Rectify11Installer
                     await Task.Run(() => PatcherHelper.SevenzExtract(Path.Combine(rectify11Folder, "7za.exe"), "e", Path.Combine(rectify11Folder, "files.7z"), rectify11Folder, "ep_setup.exe", rectify11Folder));
                     if (options.RemoveExplorerPatcher)
                     {
-                        await PatcherHelper.RunAsyncCommands("ep_setup.exe", "/uninstall", rectify11Folder);
+                        try
+                        {
+                            await PatcherHelper.RunAsyncCommands("ep_setup.exe", "/uninstall", rectify11Folder);
+                        }
+                        catch
+                        {
+                            Logger.Warn("Warning: ep_setup.exe not found / failed to run");
+                        }
                     }
-                    await PatcherHelper.RunAsyncCommands("SCHTASKS.exe", "/delete /tn mfe", Environment.SystemDirectory);
-                    await PatcherHelper.RunAsyncCommands("SCHTASKS.exe", "/delete /tn micafix", Environment.SystemDirectory);
-                    Directory.Delete(Path.Combine(windir, "MicaForEveryone"), true);
+                    await PatcherHelper.RunAsyncCommands("SCHTASKS.exe", "/delete /tn /f mfe", Environment.SystemDirectory);
+                    await PatcherHelper.RunAsyncCommands("SCHTASKS.exe", "/delete /tn /f micafix", Environment.SystemDirectory);
+                    try
+                    {
+                        Directory.Delete(Path.Combine(windir, "MicaForEveryone"), true);
+                    }
+                    catch
+                    {
+
+                    }
                     if (options.RemoveASDF)
                     {
-                        await PatcherHelper.RunAsyncCommands("SCHTASKS.exe", "/delete /tn asdf", Environment.SystemDirectory);
+                        await PatcherHelper.RunAsyncCommands("SCHTASKS.exe", "/delete /tn /f asdf", Environment.SystemDirectory);
                     }
                     if (File.Exists(@"C:\Program Files (x86)\UltraUXThemePatcher\uninstall.exe"))
                     {
