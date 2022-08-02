@@ -281,13 +281,17 @@ namespace Rectify11Installer
                     }
                 }
                 File.Copy(@"C:\Windows\Rectify11\files\winver.bak.exe", @"C:\Windows\System32\winver.exe", true);
+                if (Directory.Exists(@"C:\Windows\MicaForEveryone"))
+                {
+                    Directory.Delete(@"C:\Windows\MicaForEveryone", true);
+                }
                 if (options.RemoveThemesAndThemeTool)
                 {
                     if (Directory.Exists(@"C:\Windows\Resources\themes\rectify11"))
                     {
                         Directory.Delete(@"C:\Windows\Resources\themes\rectify11");
                     }
-                    if (File.Exists(@"C:\Windows\Resources\theme\lightrectified.theme") || File.Exists(@"C:\Windows\Resources\theme\darkrectified.theme") || File.Exists(@"C:\Windows\Resources\theme\darkcolorized.theme") || File.Exists(@"C:\Windows\Resources\theme\black.theme") || File.Exists(@"C:\Windows\Resources\theme\blacknonhighcontrastribbon.theme"))
+                    if (File.Exists(@"C:\Windows\Resources\theme\lightrectified.theme") && File.Exists(@"C:\Windows\Resources\theme\darkrectified.theme") && File.Exists(@"C:\Windows\Resources\theme\darkcolorized.theme") && File.Exists(@"C:\Windows\Resources\theme\black.theme") && File.Exists(@"C:\Windows\Resources\theme\blacknonhighcontrastribbon.theme"))
                     {
                         File.Delete(@"C:\Windows\Resources\theme\lightrectified.theme");
                         File.Delete(@"C:\Windows\Resources\theme\darkrectified.theme");
@@ -302,7 +306,10 @@ namespace Rectify11Installer
                         themes.SetValue("revert", @"C:\Windows\Resources\Themes\aero.theme", RegistryValueKind.String);
                     }
                 }
-
+                if (Directory.Exists(@"C:\Windows\contextmenus"))
+                {
+                    Directory.Delete(@"C:\Windows\contextmenus", true);
+                }
                 Wizard.SetProgress(99);
                 Wizard.SetProgressText("Removing old backups");
                 //Directory.Delete(@"C:\Windows\Rectify11", true);

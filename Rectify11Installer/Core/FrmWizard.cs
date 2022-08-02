@@ -816,7 +816,6 @@ namespace Rectify11Installer
                         {
                             await Task.Run(() => PatcherHelper.RunAsyncCommands("shell.exe", "-u -s", @"C:\Windows\contextmenus"));
                         }
-                        Directory.Delete(@"C:\Windows\contextmenus", true);
                     }
 
                     if (options.RemoveExplorerPatcher)
