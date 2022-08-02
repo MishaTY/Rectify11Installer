@@ -820,7 +820,7 @@ namespace Rectify11Installer
                     {
                         if (File.Exists(@"C:\Windows\contextmenus\nilesoft-shell-1.6\shell.exe"))
                         {
-                            await Task.Run(() => PatcherHelper.RunAsyncCommands("shell.exe", "-u -s", @"C:\Windows\nilesoft-shell-1.6\contextmenus"));
+                            await Task.Run(() => PatcherHelper.RunAsyncCommands("shell.exe", "-u -s", @"C:\Windows\contextmenus\nilesoft-shell-1.6"));
                         }
                     }
 
