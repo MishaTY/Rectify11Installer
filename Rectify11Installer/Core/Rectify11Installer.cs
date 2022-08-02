@@ -275,7 +275,10 @@ namespace Rectify11Installer
 
                 if (options.RestoreWallpapers)
                 {
-                    Directory.Delete(@"C:\Windows\Web\Wallpaper\Rectify11", true);
+                    if (Directory.Exists(@"C:\Windows\Web\Wallpaper\Rectify11"))
+                    {
+                        Directory.Delete(@"C:\Windows\Web\Wallpaper\Rectify11", true);
+                    }
                 }
                 File.Copy(@"C:\Windows\Rectify11\files\winver.bak.exe", @"C:\Windows\System32\winver.exe", true);
                 if (options.RemoveThemesAndThemeTool)
