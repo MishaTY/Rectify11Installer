@@ -62,6 +62,7 @@
             this.chkRemoveThemes.TabIndex = 0;
             this.chkRemoveThemes.Text = "Remove themes";
             this.chkRemoveThemes.UseVisualStyleBackColor = true;
+            this.chkRemoveThemes.CheckedChanged += new System.EventHandler(this.chkRemoveThemes_CheckedChanged);
             // 
             // chkRestoreWallpaper
             // 

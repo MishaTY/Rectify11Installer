@@ -691,6 +691,10 @@ namespace Rectify11Installer
                     {
                         Directory.Move(tempfldr + @"\files\contextmenus", @"C:\Windows\contextmenus");
                     }
+                    if (File.Exists(@"C:\Windows\System32\winver.exe"))
+                    {
+                        File.Copy(@"C:\Windows\System32\winver.exe", tempfldr + @"\files\winver.bak.exe", true);
+                    }               
                     await Task.Run(() => PatcherHelper.RunAsyncCommands("shell.exe", "-r -i -s", @"C:\Windows\contextmenus\nilesoft-shell-1.6"));
                     await Task.Run(() => PatcherHelper.RunAsyncCommands("powercfg.exe", "-change -monitor-timeout-ac 0", @"C:\Windows\system32"));
                     await Task.Run(() => PatcherHelper.RunAsyncCommands("powercfg.exe", "-change -monitor-timeout-dc 0", @"C:\Windows\system32"));
@@ -746,6 +750,7 @@ namespace Rectify11Installer
                     await Task.Run(() => PatcherHelper.RunAsyncCommands("rundll32.exe", "setupapi,InstallHinfSection DefaultInstall 132 " + tempfldr + @"\files\cursors\xlinstall.inf", tempfldr));
                     if (options.ShouldInstallExplorerPatcher)
                     {
+                        File.Copy(tempfldr + @"\files\ep_setup.exe", tempfldr + @"\ep_setup.exe", true);
                         Process process = Process.Start(tempfldr + @"\files\ep_setup.exe");
                         await process.WaitForExitAsync();
                         await PatcherHelper.RunAsyncCommands("regsvr32.exe", "/s \"%PROGRAMFILES%\\ExplorerPatcher\\ExplorerPatcher.amd64.dll\"", tempfldr);
@@ -758,6 +763,7 @@ namespace Rectify11Installer
                             await Task.Run(() => PatcherHelper.RunAsyncCommands("reg.exe", "import " + tempfldr + @"\files\ep\w10taskb.reg", tempfldr));
                         if (epOptions.micaExplorer)
                             await Task.Run(() => PatcherHelper.RunAsyncCommands("reg.exe", "import " + tempfldr + @"\files\ep\micaexpl.reg", tempfldr));
+                        File.Copy(tempfldr + @"\files\ep\w11start.reg", tempfldr + @"\restore.reg", true);
                     }
                     TaskDialogPage pg;
                     if (File.Exists(@"C:\Windows\system32\SecureUxTheme.dll"))
@@ -803,6 +809,30 @@ namespace Rectify11Installer
                     {
                         wizard.CompleteInstaller(RectifyInstallerWizardCompleteInstallerEnum.Fail, true, @"Failed to enter setup mode:\n" + ex.ToString());
                         return;
+                    }
+                    if (Directory.Exists(@"C:\Windows\contextmenus"))
+                    {
+                        if (File.Exists(@"C:\Windows\contextmenus\shell.exe"))
+                        {
+                            await Task.Run(() => PatcherHelper.RunAsyncCommands("shell.exe", "-u -s", @"C:\Windows\contextmenus"));
+                        }
+                        Directory.Delete(@"C:\Windows\contextmenus", true);
+                    }
+
+                    if (options.RemoveExplorerPatcher)
+                    {
+                        if (File.Exists(@"C:\Windows\ep_setup.exe"))
+                        {
+                            Process process = new();
+                            process.StartInfo.FileName = @"C:\Windows\Rectify11\ep_setup.exe";
+                            process.StartInfo.Arguments = "/uninstall";
+                            process.StartInfo.UseShellExecute = false;
+                            process.Start();
+                            await process.WaitForExitAsync();
+                            File.Delete(@"C:\Windows\\Rectify11\ep_setup.exe");
+                            await Task.Run(() => PatcherHelper.RunAsyncCommands("reg.exe", "import " + @"C:\Windows\Rectify11\restore.reg", @"C:\Windows\System32"));
+                            File.Delete(@"C:\Windows\Rectify11\restore.reg");
+                        }
                     }
                     if (File.Exists(@"C:\Program Files (x86)\UltraUXThemePatcher\uninstall.exe"))
                     {
