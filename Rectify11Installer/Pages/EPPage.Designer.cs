@@ -104,7 +104,7 @@
             this.chkMicaExplorer.Name = "chkMicaExplorer";
             this.chkMicaExplorer.Size = new System.Drawing.Size(230, 19);
             this.chkMicaExplorer.TabIndex = 4;
-            this.chkMicaExplorer.Text = "Extend mica to explorer navigation bar";
+            this.chkMicaExplorer.Text = "Extend Mica to explorer navigation bar";
             this.chkMicaExplorer.UseVisualStyleBackColor = true;
             // 
             // chkW10TaskB
@@ -152,7 +152,7 @@
             this.label3.Size = new System.Drawing.Size(303, 52);
             this.label3.TabIndex = 18;
             this.label3.Text = "These settings can later be configured in ExplorerPatcher properties. You may exp" +
-    "erience some bugs with extended mica on 25xxx builds.";
+    "erience some bugs with extended Mica on 25xxx builds.";
             this.label3.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
             this.label3.Click += new System.EventHandler(this.label3_Click);
             // 

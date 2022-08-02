@@ -89,7 +89,7 @@
             this.darkAwareRadioButton3.Size = new System.Drawing.Size(113, 21);
             this.darkAwareRadioButton3.TabIndex = 2;
             this.darkAwareRadioButton3.TabStop = true;
-            this.darkAwareRadioButton3.Text = "Dark with mica";
+            this.darkAwareRadioButton3.Text = "Dark with Mica";
             this.darkAwareRadioButton3.UseVisualStyleBackColor = true;
             // 
             // pictureBox2
