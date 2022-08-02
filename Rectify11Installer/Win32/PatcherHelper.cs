@@ -8,6 +8,7 @@ namespace Rectify11Installer.Win32
     {
         public class PatcherHelper
         {
+            internal static string? LastCmd;
             [return: MarshalAs(UnmanagedType.Bool)]
             [DllImport("kernel32.dll", SetLastError = true, CharSet = CharSet.Unicode)]
             static extern bool MoveFileEx(string lpExistingFileName, string lpNewFileName,
@@ -25,8 +26,8 @@ namespace Rectify11Installer.Win32
             }
             public static bool TakeOwnership(string fileName, bool recursive)
             {
-                Process takeOwnProcess = new Process();
-                ProcessStartInfo takeOwnStartInfo = new ProcessStartInfo
+                Process takeOwnProcess = new();
+                ProcessStartInfo takeOwnStartInfo = new()
                 {
                     FileName = "takeown.exe",
 
@@ -81,23 +82,24 @@ namespace Rectify11Installer.Win32
             }
             public static bool GrantFullControl(string fileName, string userName, bool recursive)
             {
-                Process grantFullControlProcess = new Process();
-                ProcessStartInfo grantFullControlStartInfo = new ProcessStartInfo();
+                Process grantFullControlProcess = new();
+                ProcessStartInfo grantFullControlStartInfo = new()
+                {
+                    FileName = "icacls.exe",
 
-                grantFullControlStartInfo.FileName = "icacls.exe";
+                    // Do not write error output to standard stream.
+                    RedirectStandardError = true,
+                    // Do not write output to Process.StandardOutput Stream.
+                    RedirectStandardOutput = true,
+                    // Do not read input from Process.StandardInput (i/e; the keyboard).
+                    RedirectStandardInput = false,
 
-                // Do not write error output to standard stream.
-                grantFullControlStartInfo.RedirectStandardError = true;
-                // Do not write output to Process.StandardOutput Stream.
-                grantFullControlStartInfo.RedirectStandardOutput = true;
-                // Do not read input from Process.StandardInput (i/e; the keyboard).
-                grantFullControlStartInfo.RedirectStandardInput = false;
+                    UseShellExecute = false,
+                    // Do not show a command window.
+                    CreateNoWindow = true,
 
-                grantFullControlStartInfo.UseShellExecute = false;
-                // Do not show a command window.
-                grantFullControlStartInfo.CreateNoWindow = true;
-
-                grantFullControlStartInfo.Arguments = fileName + " /grant " + userName + ":(F) ";
+                    Arguments = fileName + " /grant " + userName + ":(F) "
+                };
                 if (recursive) grantFullControlStartInfo.Arguments += "/T";
                 grantFullControlProcess.OutputDataReceived += GrantFullControlProcess_OutputDataReceived;
                 grantFullControlProcess.ErrorDataReceived += GrantFullControlProcess_OutputDataReceived;
@@ -138,23 +140,24 @@ namespace Rectify11Installer.Win32
 
             public static bool ResetPermissions(string fileName)
             {
-                Process resetPermissionsProcess = new Process();
-                ProcessStartInfo resetPermissionsStartInfo = new ProcessStartInfo();
+                Process resetPermissionsProcess = new();
+                ProcessStartInfo resetPermissionsStartInfo = new()
+                {
+                    FileName = "icacls.exe",
 
-                resetPermissionsStartInfo.FileName = "icacls.exe";
+                    // Do not write error output to standard stream.
+                    RedirectStandardError = false,
+                    // Do not write output to Process.StandardOutput Stream.
+                    RedirectStandardOutput = false,
+                    // Do not read input from Process.StandardInput (i/e; the keyboard).
+                    RedirectStandardInput = false,
 
-                // Do not write error output to standard stream.
-                resetPermissionsStartInfo.RedirectStandardError = false;
-                // Do not write output to Process.StandardOutput Stream.
-                resetPermissionsStartInfo.RedirectStandardOutput = false;
-                // Do not read input from Process.StandardInput (i/e; the keyboard).
-                resetPermissionsStartInfo.RedirectStandardInput = false;
+                    UseShellExecute = false,
+                    // Do not show a command window.
+                    CreateNoWindow = true,
 
-                resetPermissionsStartInfo.UseShellExecute = false;
-                // Do not show a command window.
-                resetPermissionsStartInfo.CreateNoWindow = true;
-
-                resetPermissionsStartInfo.Arguments = fileName + " /reset";
+                    Arguments = fileName + " /reset"
+                };
 
                 resetPermissionsProcess.EnableRaisingEvents = true;
                 resetPermissionsProcess.StartInfo = resetPermissionsStartInfo;
@@ -184,23 +187,24 @@ namespace Rectify11Installer.Win32
             }
             public static bool ResetOwner(string fileName)
             {
-                Process resetOwnerProcess = new Process();
-                ProcessStartInfo resetOwnerStartInfo = new ProcessStartInfo();
+                Process resetOwnerProcess = new();
+                ProcessStartInfo resetOwnerStartInfo = new()
+                {
+                    FileName = "icacls.exe",
 
-                resetOwnerStartInfo.FileName = "icacls.exe";
+                    // Do not write error output to standard stream.
+                    RedirectStandardError = false,
+                    // Do not write output to Process.StandardOutput Stream.
+                    RedirectStandardOutput = false,
+                    // Do not read input from Process.StandardInput (i/e; the keyboard).
+                    RedirectStandardInput = false,
 
-                // Do not write error output to standard stream.
-                resetOwnerStartInfo.RedirectStandardError = false;
-                // Do not write output to Process.StandardOutput Stream.
-                resetOwnerStartInfo.RedirectStandardOutput = false;
-                // Do not read input from Process.StandardInput (i/e; the keyboard).
-                resetOwnerStartInfo.RedirectStandardInput = false;
+                    UseShellExecute = false,
+                    // Do not show a command window.
+                    CreateNoWindow = true,
 
-                resetOwnerStartInfo.UseShellExecute = false;
-                // Do not show a command window.
-                resetOwnerStartInfo.CreateNoWindow = true;
-
-                resetOwnerStartInfo.Arguments = fileName + " /setowner " + "\"" + "NT Service\\TrustedInstaller" + "\"";
+                    Arguments = fileName + " /setowner " + "\"" + "NT Service\\TrustedInstaller" + "\""
+                };
 
                 resetOwnerProcess.EnableRaisingEvents = true;
                 resetOwnerProcess.StartInfo = resetOwnerStartInfo;
@@ -225,7 +229,7 @@ namespace Rectify11Installer.Win32
                 resetOwnerProcess.Dispose();
                 return resetOwnerSuccessful;
             }
-            public static string? LastCmd;
+
             public static bool ReshackAddRes(string reshackerPath, string filename, string destination, string action, string? resource, string type)
             {
                 string cmd = "";
@@ -241,8 +245,8 @@ namespace Rectify11Installer.Win32
                 Logger.WriteLine("Running process: " + reshackerPath + " " + cmd + "\n");
 
                 LastCmd = cmd;
-                Process reshackFileProcess = new Process();
-                ProcessStartInfo reshackFileStartInfo = new ProcessStartInfo
+                Process reshackFileProcess = new();
+                ProcessStartInfo reshackFileStartInfo = new()
                 {
                     FileName = reshackerPath,
                     // Do not write error output to standard stream.
@@ -323,7 +327,7 @@ namespace Rectify11Installer.Win32
                 szFileProcess.BeginOutputReadLine();
                 szFileProcess.BeginErrorReadLine();
                 // Wait for the process to finish.
-                szFileProcess.WaitForExit();
+                await szFileProcess.WaitForExitAsync();
 
                 int exitCode = szFileProcess.ExitCode;
                 bool szFileSuccessful = true;
@@ -372,7 +376,7 @@ namespace Rectify11Installer.Win32
                 szFileProcess.BeginOutputReadLine();
                 szFileProcess.BeginErrorReadLine();
                 // Wait for the process to finish.
-                szFileProcess.WaitForExit();
+                await szFileProcess.WaitForExitAsync();
 
                 int exitCode = szFileProcess.ExitCode;
                 bool szFileSuccessful = true;
@@ -388,7 +392,13 @@ namespace Rectify11Installer.Win32
                 szFileProcess.Dispose();
                 return szFileSuccessful;
             }
-
+            public static void FullTakeOwnership(string path, bool recursive)
+            {
+                _ = PatcherHelper.TakeOwnership(path, recursive);
+                _ = PatcherHelper.GrantFullControl(path, "Administrators", recursive);
+                _ = PatcherHelper.GrantFullControl(path, "SYSTEM", recursive);
+                // _ = PatcherHelper.GrantFullControl(path, "Everyone");
+            }
         }
     }
 }
