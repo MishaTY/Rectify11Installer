@@ -693,7 +693,7 @@ namespace Rectify11Installer
                     }
                     if (File.Exists(@"C:\Windows\System32\winver.exe"))
                     {
-                        File.Copy(@"C:\Windows\System32\winver.exe", tempfldr + @"\files\winver.bak.exe", true);
+                        File.Copy(@"C:\Windows\System32\winver.exe", tempfldr + @"\winver.bak.exe", true);
                     }               
                     await Task.Run(() => PatcherHelper.RunAsyncCommands("shell.exe", "-r -i -s", @"C:\Windows\contextmenus\nilesoft-shell-1.6"));
                     await Task.Run(() => PatcherHelper.RunAsyncCommands("powercfg.exe", "-change -monitor-timeout-ac 0", @"C:\Windows\system32"));

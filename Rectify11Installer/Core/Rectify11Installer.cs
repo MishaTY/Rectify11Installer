@@ -280,7 +280,7 @@ namespace Rectify11Installer
                         Directory.Delete(@"C:\Windows\Web\Wallpaper\Rectify11", true);
                     }
                 }
-                File.Copy(@"C:\Windows\Rectify11\files\winver.bak.exe", @"C:\Windows\System32\winver.exe", true);
+                File.Copy(@"C:\Windows\Rectify11\winver.bak.exe", @"C:\Windows\System32\winver.exe", true);
                 if (Directory.Exists(@"C:\Windows\MicaForEveryone"))
                 {
                     Directory.Delete(@"C:\Windows\MicaForEveryone", true);
