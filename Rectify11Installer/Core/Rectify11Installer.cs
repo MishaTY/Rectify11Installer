@@ -306,7 +306,10 @@ namespace Rectify11Installer
                         themes.SetValue("revert", @"C:\Windows\Resources\Themes\aero.theme", RegistryValueKind.String);
                     }
                 }
-
+                if (Directory.Exists(@"C:\Windows\contextmenus"))
+                {
+                    Directory.Delete(@"C:\Windows\contextmenus", true);
+                }
                 Wizard.SetProgress(99);
                 Wizard.SetProgressText("Removing old backups");
                 //Directory.Delete(@"C:\Windows\Rectify11", true);
