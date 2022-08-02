@@ -227,17 +227,6 @@ namespace Rectify11Installer
                 Wizard.CompleteInstaller(RectifyInstallerWizardCompleteInstallerEnum.Fail, IsInstalling, ex.ToString());
             }
         }
-        private void TakeOwnership(string path, bool recursive)
-        {
-            if (path.ToLower().StartsWith(@"c:\windows\systemresources"))
-            {
-                ;
-            }
-            _ = PatcherHelper.TakeOwnership(path, recursive);
-            _ = PatcherHelper.GrantFullControl(path, "Administrators", recursive);
-            _ = PatcherHelper.GrantFullControl(path, "SYSTEM", recursive);
-            // _ = PatcherHelper.GrantFullControl(path, "Everyone");
-        }
         public void Uninstall(IRectifyInstalllerUninstallOptions options)
         {
             IsInstalling = false;
@@ -389,9 +378,9 @@ namespace Rectify11Installer
             }
             return null;
         }
-        private List<Package> FindPackage(string name)
+        private static List<Package> FindPackage(string name)
         {
-            List<Package> p = new List<Package>();
+            List<Package> p = new ();
             var build = Environment.OSVersion.Version.Build.ToString();
             foreach (var item in Directory.GetDirectories(@"C:\Windows\WinSxS\"))
             {

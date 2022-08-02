@@ -47,10 +47,8 @@ namespace Rectify11Installer
             {
                 Directory.CreateDirectory(tempfldr);
             }
-            if (!File.Exists(tempfldr + "\\rectify11.xml"))
-            {
-                File.WriteAllText(tempfldr + "\\rectify11.xml", Properties.Resources.rectify11_xml);
-            }
+            //Make sure to write latest file
+            File.WriteAllText(tempfldr + "\\rectify11.xml", Properties.Resources.rectify11_xml);
 
             try
             {
