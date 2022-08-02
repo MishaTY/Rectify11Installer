@@ -681,8 +681,8 @@ namespace Rectify11Installer
                             Logger.Warn("Warning: ep_setup.exe not found / failed to run");
                         }
                     }
-                    await PatcherHelper.RunAsyncCommands("SCHTASKS.exe", "/delete /tn /f mfe", Environment.SystemDirectory);
-                    await PatcherHelper.RunAsyncCommands("SCHTASKS.exe", "/delete /tn /f micafix", Environment.SystemDirectory);
+                    await PatcherHelper.RunAsyncCommands("SCHTASKS.exe", "/delete /tn mfe /f", Environment.SystemDirectory);
+                    await PatcherHelper.RunAsyncCommands("SCHTASKS.exe", "/delete /tn micafix /f", Environment.SystemDirectory);
                     try
                     {
                         Directory.Delete(Path.Combine(windir, "MicaForEveryone"), true);
@@ -693,7 +693,7 @@ namespace Rectify11Installer
                     }
                     if (options.RemoveASDF)
                     {
-                        await PatcherHelper.RunAsyncCommands("SCHTASKS.exe", "/delete /tn /f asdf", Environment.SystemDirectory);
+                        await PatcherHelper.RunAsyncCommands("SCHTASKS.exe", "/delete /tn asdf /f", Environment.SystemDirectory);
                     }
                     if (File.Exists(@"C:\Program Files (x86)\UltraUXThemePatcher\uninstall.exe"))
                     {
