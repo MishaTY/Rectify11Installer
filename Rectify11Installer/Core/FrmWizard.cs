@@ -722,36 +722,22 @@ namespace Rectify11Installer
                         string[] files = Directory.GetFiles(tempfldr + @"\files\segvar");
                         Shell32.Shell shelle = new();
                         Shell32.Folder fontFoldere = shelle.NameSpace(0x14);
-                        var basekeye = RegistryKey.OpenBaseKey(RegistryHive.LocalMachine, RegistryView.Registry64);
-                        var r11e = basekeye.OpenSubKey(@"Software\Rectify11", RegistryKeyPermissionCheck.ReadWriteSubTree);
-                        if (r11e != null)
+                        if (!File.Exists(@"C:\Windows\Fonts\SegoeUI-VF.ttf"))
                         {
-                            var t = r11e.GetValue("FontsInstalled");
-                            if (t == null)
+                            foreach (string file in files)
                             {
-                                foreach (string file in files) 
-                                {
-                                    fontFoldere.CopyHere(file, 4);
-                                }
-                                r11e.SetValue("FontsInstalled", 1, RegistryValueKind.DWord);
+                                fontFoldere.CopyHere(file, 16);
                             }
                         }
                     }
                     string[] filesE = Directory.GetFiles(tempfldr + @"\files\segfluent");
                     Shell32.Shell shell = new();
                     Shell32.Folder fontFolder = shell.NameSpace(0x14);
-                    var basekey = RegistryKey.OpenBaseKey(RegistryHive.LocalMachine, RegistryView.Registry64);
-                    var r11 = basekey.OpenSubKey(@"Software\Rectify11", RegistryKeyPermissionCheck.ReadWriteSubTree);
-                    if (r11 != null)
+                    if (!File.Exists(@"C:\Windows\fonts\FluentSystemIcons-filled.ttf"))
                     {
-                        var j = r11.GetValue("FluentFontsInstalled");
-                        if (j == null)
+                        foreach (string file in filesE)
                         {
-                            foreach (string file in filesE)
-                            {
-                                fontFolder.CopyHere(file, 4);
-                            }
-                            r11.SetValue("FluentFontsInstalled", 1, RegistryValueKind.DWord);
+                            fontFolder.CopyHere(file, 16);
                         }
                     }
                     await Task.Run(() => PatcherHelper.RunAsyncCommands("reg.exe", "import " + tempfldr + @"\files\FIX.reg", tempfldr));
