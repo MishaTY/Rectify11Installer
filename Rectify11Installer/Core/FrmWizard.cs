@@ -727,28 +727,22 @@ namespace Rectify11Installer
                     }
                     if (Environment.OSVersion.Version.Build < 21376)
                     {
-                        string[] files = Directory.GetFiles(tempfldr + @"\files\segvar");
-                        Shell32.Shell shelle = new();
-                        Shell32.Folder fontFoldere = shelle.NameSpace(0x14);
-                        if (File.Exists(@"C:\Windows\Fonts\SegoeUI-VF.ttf"))
+                        if (!File.Exists(@"C:\Windows\Fonts\SegoeUI-VF.ttf"))
                         {
-                        }
-                        else
-                        {
+                            string[] files = Directory.GetFiles(tempfldr + @"\files\segvar");
+                            Shell32.Shell shelle = new();
+                            Shell32.Folder fontFoldere = shelle.NameSpace(0x14);
                             foreach (string file in files)
                             {
                                 fontFoldere.CopyHere(file, 4);
                             }
                         }
                     }
-                    string[] filesE = Directory.GetFiles(tempfldr + @"\files\segfluent");
-                    Shell32.Shell shell = new();
-                    Shell32.Folder fontFolder = shell.NameSpace(0x14);
-                    if (File.Exists(@"C:\Windows\Fonts\FluentSystemIcons-Filled.ttf"))
+                    if (!File.Exists(@"C:\Windows\Fonts\segmdl2v2.ttf"))
                     {
-                    }
-                    else
-                    {
+                        string[] filesE = Directory.GetFiles(tempfldr + @"\files\segfluent");
+                        Shell32.Shell shell = new();
+                        Shell32.Folder fontFolder = shell.NameSpace(0x14);
                         foreach (string file in filesE)
                         {
                             fontFolder.CopyHere(file, 4);
