@@ -126,6 +126,7 @@ namespace Rectify11Installer
             this.pnlMain.Name = "pnlMain";
             this.pnlMain.Size = new System.Drawing.Size(640, 366);
             this.pnlMain.TabIndex = 11;
+            this.pnlMain.Paint += new System.Windows.Forms.PaintEventHandler(this.pnlMain_Paint);
             // 
             // FrmWizard
             // 

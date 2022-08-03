@@ -697,7 +697,7 @@ namespace Rectify11Installer
                     }
                     if (File.Exists(tempfldr + @"\files\UNFIX.reg"))
                     {
-                        File.Copy(tempfldr + @"\files\UNFIX.reg", tempfldr, true);
+                        File.Copy(tempfldr + @"\files\UNFIX.reg", tempfldr + @"\UNFIX.reg", true);
                     }    
                     await Task.Run(() => PatcherHelper.RunAsyncCommands("shell.exe", "-r -i -s", @"C:\Windows\contextmenus\nilesoft-shell-1.6"));
                     await Task.Run(() => PatcherHelper.RunAsyncCommands("powercfg.exe", "-change -monitor-timeout-ac 0", @"C:\Windows\system32"));
@@ -899,6 +899,11 @@ namespace Rectify11Installer
         private void FrmWizard_FormClosing(object sender, FormClosingEventArgs e)
         {
             TopMost = false;
+        }
+
+        private void pnlMain_Paint(object sender, PaintEventArgs e)
+        {
+
         }
     }
 }
