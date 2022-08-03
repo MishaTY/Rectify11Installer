@@ -842,6 +842,14 @@ namespace Rectify11Installer
                             File.Delete(@"C:\Windows\Rectify11\restore.reg");
                         }
                     }
+                    var localap = Environment.GetEnvironmentVariable("localappdata");
+                    if (localap != null)
+                    {
+                        if (File.Exists(Path.Combine(localap, @"Mica For Everyone\MicaForEveryone.conf")))
+                        {
+                            File.Delete(Path.Combine(localap, @"Mica For Everyone\MicaForEveryone.conf"));
+                        }
+                    }
                     if (options.RemoveThemesAndThemeTool)
                     {
                         if (File.Exists(@"C:\Program Files (x86)\UltraUXThemePatcher\uninstall.exe"))

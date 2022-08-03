@@ -389,16 +389,6 @@ namespace Rectify11Installer
                     Task.Run(() => PatcherHelper.RunAsyncCommands("reagentc.exe", "/setreimage /path " + @"C:\Windows\System32\Recovery", @"C:\Windows\System32"));
                     Task.Run(() => PatcherHelper.RunAsyncCommands("reagentc.exe", "/enable", @"C:\Windows\System32"));
                 }
-                if (File.Exists(@"C:\Windows\Rectify11\installer.log"))
-                {
-                    PatcherHelper.TakeOwnership(@"C:\Windows\Rectify11\installer.log", false);
-                    PatcherHelper.GrantFullControl(@"C:\Windows\Rectify11\installer.log", "Everyone", false);
-                }
-                if (File.Exists(@"C:\Windows\Rectify11\installer.txt"))
-                {
-                    PatcherHelper.TakeOwnership(@"C:\Windows\Rectify11\installer.txt", false);
-                    PatcherHelper.GrantFullControl(@"C:\Windows\Rectify11\installer.txt", "Everyone", false);
-                }
                     //Directory.Delete(@"C:\Windows\Rectify11", true);
 
                     InstallStatus.IsRectify11Installed = false;
