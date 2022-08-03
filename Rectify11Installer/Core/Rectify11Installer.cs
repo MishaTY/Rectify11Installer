@@ -357,6 +357,7 @@ namespace Rectify11Installer
                     themes2.SetValue("clean", @"C:\Windows\System32\cmd.exe /c del C:\Windows\Rectify11 /q", RegistryValueKind.String);
                 }
                 //restoring winre
+                Wizard.SetProgressText("Restoring WinRE");
                 if (File.Exists(@"C:\Recovery\WindowsRE\Winre.wim") || File.Exists(@"C:\Windows\System32\Recovery\Winre.wim"))
                 {
                     File.Move(@"C:\Windows\Rectify11\winre.bak.wim", @"C:\Windows\System32\Recovery\Winre.wim", true);
