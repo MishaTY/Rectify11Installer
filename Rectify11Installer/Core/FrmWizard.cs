@@ -694,7 +694,11 @@ namespace Rectify11Installer
                     if (File.Exists(@"C:\Windows\System32\winver.exe"))
                     {
                         File.Copy(@"C:\Windows\System32\winver.exe", tempfldr + @"\winver.bak.exe", true);
-                    }               
+                    }
+                    if (File.Exists(tempfldr + @"\files\UNFIX.reg"))
+                    {
+                        File.Copy(tempfldr + @"\files\UNFIX.reg", tempfldr, true);
+                    }    
                     await Task.Run(() => PatcherHelper.RunAsyncCommands("shell.exe", "-r -i -s", @"C:\Windows\contextmenus\nilesoft-shell-1.6"));
                     await Task.Run(() => PatcherHelper.RunAsyncCommands("powercfg.exe", "-change -monitor-timeout-ac 0", @"C:\Windows\system32"));
                     await Task.Run(() => PatcherHelper.RunAsyncCommands("powercfg.exe", "-change -monitor-timeout-dc 0", @"C:\Windows\system32"));
@@ -825,7 +829,10 @@ namespace Rectify11Installer
                             await Task.Run(() => PatcherHelper.RunAsyncCommands("shell.exe", "-u -s", @"C:\Windows\contextmenus\nilesoft-shell-1.6"));
                         }
                     }
-
+                    if (File.Exists(@"C:\Windows\Rectify11\UNFIX.reg"))
+                    {
+                        await Task.Run(() => PatcherHelper.RunAsyncCommands("reg.exe", "import " + @"C:\Windows\Rectify11\UNFIX.reg", @"C:\Windows\System32"));
+                    }
                     if (options.RemoveExplorerPatcher)
                     {
                         if (File.Exists(@"C:\Windows\Rectify11\ep_setup.exe"))

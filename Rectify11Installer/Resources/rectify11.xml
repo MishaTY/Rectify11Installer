@@ -261,6 +261,8 @@
 
 	<Patch Package="microsoft-windows-imageres" HardlinkTarget="C:\Windows\SystemResources\imageres.dll.mun" DisableOnSafeMode="false" Arch="amd64">
 		<Commands>
+			<Command action="delete" mask="WAVE,"></Command>
+			<Command action="addskip" resource="Imageres_WAVE.res" mask="WAVE,"></Command>
 			<Command action="delete" mask="ICONGROUP,"></Command>
 			<Command action="addskip" resource="Imageres_Icons.res" mask="ICONGROUP,"></Command>
 		</Commands>
