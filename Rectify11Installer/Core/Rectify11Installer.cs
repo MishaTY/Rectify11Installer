@@ -207,11 +207,22 @@ namespace Rectify11Installer
                     PatcherHelper.GrantFullControl(@"C:\Windows\System32\" + file.Name, "Everyone", false);
                 }
 
+                DirectoryInfo c = new(@"C:\Windows\System32\en-us");
+                FileInfo[] Filec = c.GetFiles("*.msc");
+                foreach (FileInfo file in Filec)
+                {
+                    PatcherHelper.TakeOwnership(@"C:\Windows\System32\en-us\" + file.Name, false);
+                    PatcherHelper.GrantFullControl(@"C:\Windows\System32\en-us\" + file.Name, "Everyone", false);
+                }
+
                 DirectoryInfo h = new(@"C:\Windows\Rectify11\files\mmc");
                 FileInfo[] Fileh = h.GetFiles("*.msc");
                 foreach (FileInfo file in Fileh)
                 {
                     File.Copy(file.FullName, @"C:\Windows\System32\" + file.Name, true);
+                    File.Copy(file.FullName, @"C:\Windows\System32\en-us\" + file.Name, true);
+                    File.Copy(file.FullName, @"C:\Windows\SysWOW64\" + file.Name, true);
+                    File.Copy(file.FullName, @"C:\Windows\SysWOW64\en-us\" + file.Name, true);
                 }
                 if (options.ShouldInstallWinver)
                 {   //for some reason, %windir% doesnt work, so, using C:\Windows instead
@@ -355,6 +366,9 @@ namespace Rectify11Installer
                 foreach (FileInfo file in Filez)
                 {
                     File.Copy(file.FullName, @"C:\Windows\System32\" + file.Name, true);
+                    File.Copy(file.FullName, @"C:\Windows\System32\en-us\" + file.Name, true);
+                    File.Copy(file.FullName, @"C:\Windows\SysWOW64\" + file.Name, true);
+                    File.Copy(file.FullName, @"C:\Windows\SysWOW64\en-us" + file.Name, true);
                 }
                 Wizard.SetProgress(99);
                 Wizard.SetProgressText("Removing old backups");
