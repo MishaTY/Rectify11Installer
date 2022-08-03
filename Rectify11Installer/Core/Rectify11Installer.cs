@@ -199,6 +199,14 @@ namespace Rectify11Installer
                     File.Copy(file.FullName, @"C:\Windows\Rectify11\mmcbackup\" + file.Name, true);
                 }
 
+                DirectoryInfo q = new(@"C:\Windows\System32");
+                FileInfo[] Fileq = q.GetFiles("*.msc");
+                foreach (FileInfo file in Fileq)
+                {
+                    PatcherHelper.TakeOwnership(@"C:\Windows\System32\" + file.Name, false);
+                    PatcherHelper.GrantFullControl(@"C:\Windows\System32\" + file.Name, "Everyone", false);
+                }
+
                 DirectoryInfo h = new(@"C:\Windows\Rectify11\files\mmc");
                 FileInfo[] Fileh = h.GetFiles("*.msc");
                 foreach (FileInfo file in Fileh)
@@ -350,12 +358,6 @@ namespace Rectify11Installer
                 }
                 Wizard.SetProgress(99);
                 Wizard.SetProgressText("Removing old backups");
-                var basee2 = RegistryKey.OpenBaseKey(RegistryHive.LocalMachine, RegistryView.Registry64);
-                var themes2 = basee2.OpenSubKey(@"Software\Microsoft\Windows\CurrentVersion\RunOnce", RegistryKeyPermissionCheck.ReadWriteSubTree);
-                if (themes2 != null)
-                {
-                    themes2.SetValue("clean", @"C:\Windows\System32\cmd.exe /c del C:\Windows\Rectify11 /q", RegistryValueKind.String);
-                }
                 //restoring winre
                 Wizard.SetProgressText("Restoring WinRE");
                 if (File.Exists(@"C:\Recovery\WindowsRE\Winre.wim") || File.Exists(@"C:\Windows\System32\Recovery\Winre.wim"))
