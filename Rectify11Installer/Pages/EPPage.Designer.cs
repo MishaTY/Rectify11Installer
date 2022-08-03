@@ -37,6 +37,7 @@
             this.pictureBox2 = new System.Windows.Forms.PictureBox();
             this.pictureBox3 = new System.Windows.Forms.PictureBox();
             this.label3 = new System.Windows.Forms.Label();
+            this.label2 = new System.Windows.Forms.Label();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox2)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox3)).BeginInit();
@@ -67,11 +68,12 @@
             // 
             this.chkW11.AutoSize = true;
             this.chkW11.CheckAlign = System.Drawing.ContentAlignment.TopLeft;
-            this.chkW11.Font = new System.Drawing.Font("Segoe UI Semibold", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point);
+            this.chkW11.Font = new System.Drawing.Font("Segoe UI", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
             this.chkW11.ForeColor = System.Drawing.Color.White;
-            this.chkW11.Location = new System.Drawing.Point(475, 143);
+            this.chkW11.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            this.chkW11.Location = new System.Drawing.Point(475, 140);
             this.chkW11.Name = "chkW11";
-            this.chkW11.Size = new System.Drawing.Size(130, 19);
+            this.chkW11.Size = new System.Drawing.Size(142, 21);
             this.chkW11.TabIndex = 2;
             this.chkW11.Text = "Windows 11 Default";
             this.chkW11.UseVisualStyleBackColor = true;
@@ -81,14 +83,14 @@
             this.chkW10.AutoSize = true;
             this.chkW10.CheckAlign = System.Drawing.ContentAlignment.TopLeft;
             this.chkW10.Checked = true;
-            this.chkW10.Font = new System.Drawing.Font("Segoe UI Semibold", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point);
+            this.chkW10.Font = new System.Drawing.Font("Segoe UI", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
             this.chkW10.ForeColor = System.Drawing.Color.White;
-            this.chkW10.Location = new System.Drawing.Point(310, 142);
+            this.chkW10.Location = new System.Drawing.Point(310, 140);
             this.chkW10.Name = "chkW10";
-            this.chkW10.Size = new System.Drawing.Size(157, 19);
+            this.chkW10.Size = new System.Drawing.Size(154, 21);
             this.chkW10.TabIndex = 3;
             this.chkW10.TabStop = true;
-            this.chkW10.Text = "Windows 10 Modernized";
+            this.chkW10.Text = "Windows 10 Rounded";
             this.chkW10.UseVisualStyleBackColor = true;
             // 
             // chkMicaExplorer
@@ -96,11 +98,11 @@
             this.chkMicaExplorer.AutoSize = true;
             this.chkMicaExplorer.Checked = true;
             this.chkMicaExplorer.CheckState = System.Windows.Forms.CheckState.Checked;
-            this.chkMicaExplorer.Font = new System.Drawing.Font("Segoe UI Semibold", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point);
+            this.chkMicaExplorer.Font = new System.Drawing.Font("Segoe UI", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
             this.chkMicaExplorer.ForeColor = System.Drawing.Color.White;
-            this.chkMicaExplorer.Location = new System.Drawing.Point(312, 270);
+            this.chkMicaExplorer.Location = new System.Drawing.Point(312, 245);
             this.chkMicaExplorer.Name = "chkMicaExplorer";
-            this.chkMicaExplorer.Size = new System.Drawing.Size(230, 19);
+            this.chkMicaExplorer.Size = new System.Drawing.Size(255, 21);
             this.chkMicaExplorer.TabIndex = 4;
             this.chkMicaExplorer.Text = "Extend Mica to explorer navigation bar";
             this.chkMicaExplorer.UseVisualStyleBackColor = true;
@@ -108,12 +110,12 @@
             // chkW10TaskB
             // 
             this.chkW10TaskB.AutoSize = true;
-            this.chkW10TaskB.Font = new System.Drawing.Font("Segoe UI Semibold", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point);
+            this.chkW10TaskB.Font = new System.Drawing.Font("Segoe UI", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
             this.chkW10TaskB.ForeColor = System.Drawing.Color.White;
-            this.chkW10TaskB.Location = new System.Drawing.Point(312, 244);
+            this.chkW10TaskB.Location = new System.Drawing.Point(312, 265);
             this.chkW10TaskB.Name = "chkW10TaskB";
             this.chkW10TaskB.Padding = new System.Windows.Forms.Padding(0, 6, 0, 0);
-            this.chkW10TaskB.Size = new System.Drawing.Size(134, 25);
+            this.chkW10TaskB.Size = new System.Drawing.Size(147, 27);
             this.chkW10TaskB.TabIndex = 5;
             this.chkW10TaskB.Text = "Windows 10 Taskbar";
             this.chkW10TaskB.UseVisualStyleBackColor = true;
@@ -121,7 +123,7 @@
             // pictureBox2
             // 
             this.pictureBox2.Image = global::Rectify11Installer.Properties.Resources._10start;
-            this.pictureBox2.Location = new System.Drawing.Point(310, 44);
+            this.pictureBox2.Location = new System.Drawing.Point(312, 44);
             this.pictureBox2.Name = "pictureBox2";
             this.pictureBox2.Size = new System.Drawing.Size(140, 89);
             this.pictureBox2.SizeMode = System.Windows.Forms.PictureBoxSizeMode.StretchImage;
@@ -152,10 +154,23 @@
     "erience some bugs with extended Mica on 25xxx builds.";
             this.label3.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
             // 
+            // label2
+            // 
+            this.label2.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.label2.Font = new System.Drawing.Font("Segoe UI", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
+            this.label2.ForeColor = System.Drawing.Color.White;
+            this.label2.Location = new System.Drawing.Point(306, 164);
+            this.label2.Name = "label2";
+            this.label2.Size = new System.Drawing.Size(204, 52);
+            this.label2.TabIndex = 19;
+            this.label2.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            // 
             // EPPage
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 15F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
+            this.Controls.Add(this.label2);
             this.Controls.Add(this.chkW10TaskB);
             this.Controls.Add(this.label3);
             this.Controls.Add(this.chkMicaExplorer);
@@ -167,6 +182,7 @@
             this.Controls.Add(this.pictureBox1);
             this.Name = "EPPage";
             this.WizardTopText = "Customize your Desktop";
+            this.Load += new System.EventHandler(this.EPPage_Load);
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox2)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox3)).EndInit();
@@ -186,5 +202,6 @@
         private PictureBox pictureBox2;
         private PictureBox pictureBox3;
         private Label label3;
+        private Label label2;
     }
 }
