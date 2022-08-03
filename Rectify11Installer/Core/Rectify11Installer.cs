@@ -134,6 +134,7 @@ namespace Rectify11Installer
                 await Task.Run(() => PatcherHelper.RunAsyncCommands("reagentc.exe", "/enable", @"C:\Windows\System32"));
                 if (File.Exists(@"C:\Recovery\WindowsRE\Winre.wim"))
                 {
+                    File.Copy(@"C:\Recovery\WindowsRE\Winre.wim", tempfldr + @"\winre.bak.wim", true);
                     File.Copy(@"C:\Recovery\WindowsRE\Winre.wim", @"C:\Windows\System32\Recovery\Winre.wim", true);
                     Wizard.SetProgressText("Mounting WinRE");
 
@@ -354,6 +355,15 @@ namespace Rectify11Installer
                 if (themes2 != null)
                 {
                     themes2.SetValue("clean", @"C:\Windows\System32\cmd.exe /c del C:\Windows\Rectify11 /q", RegistryValueKind.String);
+                }
+                //restoring winre
+                if (File.Exists(@"C:\Recovery\WindowsRE\Winre.wim") || File.Exists(@"C:\Windows\System32\Recovery\Winre.wim"))
+                {
+                    File.Move(@"C:\Windows\Rectify11\winre.bak.wim", @"C:\Windows\System32\Recovery\Winre.wim", true);
+                    Directory.Delete(@"C:\Recovery", true);
+                    Task.Run(() => PatcherHelper.RunAsyncCommands("reagentc.exe", "/disable", @"C:\Windows\System32"));
+                    Task.Run(() => PatcherHelper.RunAsyncCommands("reagentc.exe", "/setreimage /path " + @"C:\Windows\System32\Recovery", @"C:\Windows\System32"));
+                    Task.Run(() => PatcherHelper.RunAsyncCommands("reagentc.exe", "/enable", @"C:\Windows\System32"));
                 }
                 //Directory.Delete(@"C:\Windows\Rectify11", true);
 
