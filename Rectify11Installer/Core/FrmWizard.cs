@@ -595,11 +595,6 @@ namespace Rectify11Installer
                     {
                         Directory.CreateDirectory(@"C:\Windows\Rectify11\");
                     }
-                    if (Directory.Exists(@"C:\Windows\Rectify11"))
-                    {
-                        Directory.Delete(@"C:\Windows\Rectify11", true);
-                        Directory.CreateDirectory(@"C:\Windows\Rectify11\");
-                    }
                 }
                 catch (Exception ex)
                 {

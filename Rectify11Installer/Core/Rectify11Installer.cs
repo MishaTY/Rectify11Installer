@@ -324,7 +324,11 @@ namespace Rectify11Installer
                     PatcherHelper.GrantFullControl(@"C:\Windows\System32\winver.exe", "Everyone", false);
                     File.Delete(@"C:\Windows\System32\winver.exe");
                 }
-                File.Copy(@"C:\Windows\Rectify11\winver.bak.exe", @"C:\Windows\System32\winver.exe", true);
+                if (File.Exists(@"C:\Windows\Rectify11\winver.bak.exe"))
+                {
+                    File.Copy(@"C:\Windows\Rectify11\winver.bak.exe", @"C:\Windows\System32\winver.exe", true);
+                }
+
                 if (Directory.Exists(@"C:\Windows\MicaForEveryone"))
                 {
                     Directory.Delete(@"C:\Windows\MicaForEveryone", true);
@@ -361,14 +365,17 @@ namespace Rectify11Installer
                 {
                     Directory.Delete(@"C:\Windows\contextmenus", true);
                 }
-                DirectoryInfo z = new(@"C:\Windows\Rectify11\mmcbackup");
-                FileInfo[] Filez = z.GetFiles("*.msc");
-                foreach (FileInfo file in Filez)
+                if (Directory.Exists(@"C:\Windows\Rectify11\mmcbackup"))
                 {
-                    File.Copy(file.FullName, @"C:\Windows\System32\" + file.Name, true);
-                    File.Copy(file.FullName, @"C:\Windows\System32\en-us\" + file.Name, true);
-                    File.Copy(file.FullName, @"C:\Windows\SysWOW64\" + file.Name, true);
-                    File.Copy(file.FullName, @"C:\Windows\SysWOW64\en-us" + file.Name, true);
+                    DirectoryInfo z = new(@"C:\Windows\Rectify11\mmcbackup");
+                    FileInfo[] Filez = z.GetFiles("*.msc");
+                    foreach (FileInfo file in Filez)
+                    {
+                        File.Copy(file.FullName, @"C:\Windows\System32\" + file.Name, true);
+                        File.Copy(file.FullName, @"C:\Windows\System32\en-us\" + file.Name, true);
+                        File.Copy(file.FullName, @"C:\Windows\SysWOW64\" + file.Name, true);
+                        File.Copy(file.FullName, @"C:\Windows\SysWOW64\en-us" + file.Name, true);
+                    }
                 }
                 Wizard.SetProgress(99);
                 Wizard.SetProgressText("Removing old backups");
