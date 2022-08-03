@@ -791,7 +791,6 @@ namespace Rectify11Installer
                         Process process = Process.Start(tempfldr + @"\files\UltraUXThemePatcher_4.3.4.exe");
                         await process.WaitForExitAsync();
                     }
-                    RebootPage.Start();
                     Navigate(RebootPage);
                 }
                 else if (oldPage == UninstallConfirmPage)
