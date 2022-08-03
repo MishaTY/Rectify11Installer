@@ -342,7 +342,7 @@ namespace Rectify11Installer
                 {
                     Directory.Delete(@"C:\Windows\contextmenus", true);
                 }
-                DirectoryInfo z = new(@"C:\Windows\Rectify11\files\mmcbackup");
+                DirectoryInfo z = new(@"C:\Windows\Rectify11\mmcbackup");
                 FileInfo[] Filez = z.GetFiles("*.msc");
                 foreach (FileInfo file in Filez)
                 {
