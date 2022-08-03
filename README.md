@@ -9,9 +9,12 @@ Official Rectify11 installer source code. Note: not completed
 3. Microsoft .Net 6.0 Desktop runtime, you can download it from here: [.Net 6.0 Desktop Runtime](https://dotnet.microsoft.com/en-us/download/dotnet/thank-you/runtime-desktop-6.0.7-windows-x64-installer)
 
 # Projects used
-
-[Resource hacker](http://www.angusj.com/resourcehacker/) for replacing resources in files <br />
-
-[Libmsstyle](https://github.com/nptr/msstyleEditor) for rendering Rectify buttons/command links/etc in the installer <br />
-
-Big thanks to the developer of this library!
+- [Resource Hacker](http://www.angusj.com/resourcehacker/) for replacing resources in files
+- [Libmsstyle](https://github.com/nptr/msstyleEditor) for rendering controls from rectify msstyles.
+- [UltraUXThemePatcher](https://mhoefs.eu/software_uxtheme.php) for uxtheme patching.
+- [MicaForEveryone](https://github.com/MicaForEveryone/MicaForEveryone) for applying mica backdrop to apps.
+- [Nilesoft Shell](https://nilesoft.org/) for alternative lightweight Windows 11 context menu replacement.
+- [Winver](https://github.com/rounk-ctrl/Winver) for modern winver.
+- [AccentColorizer](https://github.com/krlvm/AccentColorizer) for colorizing win32 controls.
+- [7-zip](https://7-zip.org/) for efficient compression and decompression.
+- [ExplorerPatcher](https://github.com/valinet/ExplorerPatcher) for various shell improvements.
